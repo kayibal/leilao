@@ -1,4 +1,4 @@
-package Buisness;
+package Business;
 public class UsuarioControl {
 
 	private int loggedInUser;

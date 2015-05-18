@@ -1,4 +1,4 @@
-package Buisness;
+package Business;
 public class Anuncio {
 
 	private String modelo;

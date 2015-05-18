@@ -1,4 +1,4 @@
-package Buisness;
+package Business;
 public class Leilao {
 
 	private int maxParticipantes;

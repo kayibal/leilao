@@ -1,7 +1,7 @@
 package View;
 
-import Buisness.AnuncioControl;
-import Buisness.UsuarioControl;
+import Business.AnuncioControl;
+import Business.UsuarioControl;
 import java.util.Scanner;
 
 

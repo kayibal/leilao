@@ -1,4 +1,4 @@
-package Buisness;
+package Business;
 public class Usuario {
 
 	private String nome;
