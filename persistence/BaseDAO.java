@@ -1,25 +1,44 @@
 package persistence;
 
-public class BaseDAO {
+import java.util.ArrayList;
 
-	public void save() {
+public class BaseDAO<Type> {
 
+	private ArrayList<Type> data;
+	
+	public BaseDAO(){
+		this.data = new ArrayList<Type>();
 	}
 
-	public void fetch(int ID) {
-
+	public boolean save(Type entry) {
+		return data.add(entry);
 	}
 
-	public void getAll() {
-
+	public Type fetch(int ID) {
+		try{
+			return data.get(ID);
+		} catch (IndexOutOfBoundsException e){
+			return null;
+		}
 	}
 
-	public void delete() {
-
+	public Type[] getAll() {
+		return (Type[]) data.toArray();
 	}
 
-	public void update() {
+	public boolean delete(Type entry) {
+		return data.remove(entry);
+	}
 
+	public boolean update(int ID, Type newEntry) {
+		try{
+			if(data.set(ID, newEntry) != null){
+				return true;
+			}
+			return false;
+		} catch (IndexOutOfBoundsException e){
+			return false;
+		}
 	}
 
 }

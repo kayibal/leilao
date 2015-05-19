@@ -1,29 +1,30 @@
 package persistence;
 import business.Anuncio;
+import business.Leilao;
 import java.util.ArrayList;
 
 public class AnuncioDAO {
 	
-	private ArrayList<Anuncio> data;
+	private ArrayList<Anuncio> dataAnuncio;
 
 	public boolean save(Anuncio entry) {
-		return data.add(entry);
+		return dataAnuncio.add(entry);
 	}
 
 	public Anuncio fetch(int ID) {
-		return data.get(ID);
+		return dataAnuncio.get(ID);
 	}
 
 	public Anuncio[] getAll() {
-		return (Anuncio[]) data.toArray();
+		return (Anuncio[]) dataAnuncio.toArray();
 	}
 
-	public void delete(Anuncio entry) {
-		data.remove(entry);
+	public boolean delete(Anuncio entry) {
+		return dataAnuncio.remove(entry);
 	}
 
 	public boolean update(int ID, Anuncio newEntry) {
-		if(data.set(ID, newEntry) != null){
+		if(dataAnuncio.set(ID, newEntry) != null){
 			return true;
 		}
 		return false;

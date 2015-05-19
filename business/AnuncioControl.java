@@ -1,10 +1,24 @@
 package business;
 
 import java.util.List;
+import persistence.BaseDAO;
 
 public class AnuncioControl {
 
 	private UsuarioControl usuarioControl;
+	private BaseDAO<Anuncio> anuncioDAO;
+	private BaseDAO<Leilao> leilaoDAO;
+	private BaseDAO<Lance> lanceDAO;
+	
+	public AnuncioControl(){
+		this.anuncioDAO = new BaseDAO<Anuncio>();
+		this.leilaoDAO = new BaseDAO<Leilao>();
+		this.lanceDAO = new BaseDAO<Lance>();
+	}
+	
+	public void setUC(UsuarioControl uc){
+		this.usuarioControl = uc;
+	}
 
 	public void aprovarAnuncio(int aid) {
 
@@ -16,35 +30,35 @@ public class AnuncioControl {
 		String msg = "";
 		
 		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo modelo inválido\n";
+			msg += "Campo modelo invï¿½lido\n";
 			validInput = false;
 		}
 		if(!ano.matches("\\d{4}")){
-			msg += "Campo ano inválido\n";
+			msg += "Campo ano invï¿½lido\n";
 			validInput = false;
 		}
 		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo motor inválido\n";
+			msg += "Campo motor invï¿½lido\n";
 			validInput = false;
 		}
 		if(!placa.matches("\\D{3}-\\d{4}")){
-			msg += "Campo placa inválido\n";
+			msg += "Campo placa invï¿½lido\n";
 			validInput = false;
 		}
 		if(!cor.matches("\\D{3,12}")){
-			msg += "Campo cor inválido\n";
+			msg += "Campo cor invï¿½lido\n";
 			validInput = false;
 		}
 		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo marca inválido\n";
+			msg += "Campo marca invï¿½lido\n";
 			validInput = false;
 		}
 		if(!potencia.matches("\\d{4}")){
-			msg += "Campo potência inválido\n";
+			msg += "Campo potï¿½ncia invï¿½lido\n";
 			validInput = false;
 		}
 		if(!lance.matches("\\d*.\\d*")){
-			msg += "Campo lance mínimo inválido\n";
+			msg += "Campo lance mï¿½nimo invï¿½lido\n";
 			validInput = false;
 		}
 		
@@ -53,7 +67,7 @@ public class AnuncioControl {
 			//save a to database
 			return true;
 		} else {
-			System.out.println("Anúncio nao foi criado:\n" + msg);
+			System.out.println("Anï¿½ncio nao foi criado:\n" + msg);
 			return false;
 		}
 		

@@ -11,15 +11,17 @@ public class UserInterfaceView {
 	private AnuncioControl ac;
 	private UsuarioControl uc;
 	
-	UserInterfaceView(){
-		user_input = new Scanner(System.in);
+	UserInterfaceView(AnuncioControl ac, UsuarioControl uc){
+		this.user_input = new Scanner(System.in);
+		this.ac = ac;
+		this.uc = uc;
 	}
 
 	public void mostrarMenuPrincipal() {
 		
 		String selection;
 		System.out.println("Select your desired action by typing the according number:");
-		System.out.println("1. Criar Anúncio");
+		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
 		
 		selection = user_input.next();
@@ -60,15 +62,15 @@ public class UserInterfaceView {
 		marca = user_input.next();
 		
 		String potencia;
-		System.out.println("Digite a potência de seu carro");
+		System.out.println("Digite a potencia de seu carro");
 		potencia = user_input.next();
 		
 		String lanceMin;
-		System.out.println("Digite o lance mínimo de seu anúncio");
+		System.out.println("Digite o lance minimo de seu anï¿½ncio");
 		lanceMin = user_input.next();
 		
 		if( ac.criarAnuncio(modelo, ano, motor, placa, cor, marca, potencia, lanceMin) ){
-			System.out.println("O Anúncio foi criado com sucesso!");
+			System.out.println("O Anuncio foi criado com sucesso!");
 			this.mostrarMenuPrincipal();
 		}
 		
@@ -95,28 +97,43 @@ public class UserInterfaceView {
 	private int aid = 0;
 
 	private void darLance() {
-		if( ac.limiteDeLancesAtingido(uid, aid) ){
-			System.out.println("O usuário atingiu seu limite de lances.");
-			this.mostrarMenuPrincipal();
-			return;
-		}
 		
-		String lanceValorString;
-		System.out.println("Digite o valor do lance");
-		lanceValorString = user_input.next();
-		int lanceValor = Integer.parseInt(lanceValorString);
-		
-		
-		if( !ac.valorMinimoObservado(aid, lanceValor) ){
-			System.out.println("O valor informado está abaixo do valor de lance mínimo.");
-			this.mostrarMenuPrincipal();
-			return;
-		}
-		
-		if( ac.darLance(uid, aid, lanceValor) ){
-			System.out.println("O Lance foi realizado com sucesso!");
-			this.mostrarMenuPrincipal();
-		}
+		int uid = this.uc.getLoggedUserID();
+	    
+		  String anuncioAlvo;
+		  System.out.println("Digite o leilÃ£o para o qual deseja realizar um lance");
+		  anuncioAlvo = user_input.next();
+		  
+		  int aid = Integer.parseInt(anuncioAlvo);
+		  
+		  //OK
+		  if( ac.limiteDeLancesAtingido(uid, aid) ){
+		   System.out.println("O usuÃ¡rio atingiu seu limite de lances para este leilÃ£o.");
+		   this.mostrarMenuPrincipal();
+		   return;
+		  }
+		  
+		  String lanceValorString;
+		  System.out.println("Digite o valor do lance");
+		  lanceValorString = user_input.next();
+		  int lanceValor = Integer.parseInt(lanceValorString);
+		  
+		  
+		  if( !ac.valorMinimoObservado(aid, lanceValor) ){
+		   System.out.println("O valor informado estÃ¡ abaixo do valor de lance mÃ­nimo.");
+		   this.mostrarMenuPrincipal();
+		   return;
+		  }
+		  
+		  if( ac.darLance(uid, aid, lanceValor) ){
+			  System.out.println("O Lance foi realizado com sucesso!");
+			  this.mostrarMenuPrincipal();
+		  } else {
+			  System.out.println("O leilÃ£o desejado nÃ£o foi encontrado.");
+			  this.mostrarMenuPrincipal();
+			  return;
+		  }
+
 	}
 
 	private void mostrarAnuncios() {
