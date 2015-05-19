@@ -87,21 +87,30 @@ public class AnuncioControl {
 	}
 	
 	public boolean limiteDeLancesAtingido(int uid, int aid){
-		Usuario u = getUsuarioFromID(uid);
-		Anuncio a = getAnuncioFromID(aid);
+		Usuario u = this.usuarioDAO.fetch(uid);
+		Anuncio a = this.anuncioDAO.fetch(aid);
 		
-		if(u.getLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
+		if(u.getNumLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
 		else return false;
 	}
 	
-	public boolean valorMinimoObservado(int aid, int lanceValor){
-		Anuncio a;// = getfromdatabase
+	public boolean valorMinimoObservado(int aid, Float lanceValor){
+		Anuncio a = this.anuncioDAO.fetch(aid);
+		
 		if(lanceValor >= a.getLanceMin()) return true;
 		else return false;
 	}
 
 	public boolean darLance(int uid, int aid, int lanceValor) {
-		return false;
+		Lance l = new Lance(lanceValor);
+		
+		Usuario u = this.usuarioDAO.fetch(uid);
+		Anuncio a = this.anuncioDAO.fetch(aid);
+		
+		u.addLance(l);
+		a.getLeilao().addLance(l);
+		
+		return true;
 	}
 
 	public List<Leilao> getLeiloes() {

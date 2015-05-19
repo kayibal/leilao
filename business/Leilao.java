@@ -61,8 +61,8 @@ public class Leilao {
 		return lances;
 	}
 
-	public void setLances(List<Lance> lances) {
-		this.lances = lances;
+	public void addLance(Lance lance){
+		this.lances.add(lance);
 	}
 
 }
