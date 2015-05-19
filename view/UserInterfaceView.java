@@ -2,7 +2,11 @@ package view;
 
 import business.AnuncioControl;
 import business.UsuarioControl;
+import business.Anuncio;
 import java.util.Scanner;
+import java.util.ArrayList;
+
+import exceptions.UserInputException;
 
 
 public class UserInterfaceView {
@@ -11,10 +15,11 @@ public class UserInterfaceView {
 	private AnuncioControl ac;
 	private UsuarioControl uc;
 	
-	UserInterfaceView(AnuncioControl ac, UsuarioControl uc){
+	public UserInterfaceView(){
 		this.user_input = new Scanner(System.in);
-		this.ac = ac;
-		this.uc = uc;
+		
+		this.uc = new UsuarioControl();
+		this.ac = new AnuncioControl(this.uc);
 	}
 
 	public void mostrarMenuPrincipal() {
@@ -23,6 +28,7 @@ public class UserInterfaceView {
 		System.out.println("Select your desired action by typing the according number:");
 		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
+		System.out.println("3. Mostrar Leilões");
 		
 		selection = user_input.next();
 		switch(selection.trim()){
@@ -31,6 +37,10 @@ public class UserInterfaceView {
 				break;
 			case "2":
 				this.darLance();
+				break;
+			case "3":
+				this.mostrarAnuncios();
+				this.mostrarMenuPrincipal();
 				break;
 		}
 		
@@ -69,9 +79,12 @@ public class UserInterfaceView {
 		System.out.println("Digite o lance minimo de seu an�ncio");
 		lanceMin = user_input.next();
 		
-		if( ac.criarAnuncio(modelo, ano, motor, placa, cor, marca, potencia, lanceMin) ){
+		try{
+			ac.criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lanceMin);
 			System.out.println("O Anuncio foi criado com sucesso!");
 			this.mostrarMenuPrincipal();
+		}catch(UserInputException e){
+			System.out.println(e.getMessage());
 		}
 		
 	}
@@ -91,34 +104,39 @@ public class UserInterfaceView {
 	private void mostrarLeilao() {
 
 	}
-	
-	//temporary vars to stop errors
-	private int uid = 0;
-	private int aid = 0;
 
 	private void darLance() {
 		
-		int uid = this.uc.getLoggedUserID();
-	    
+		  int uid = this.uc.getLoggedUserID();
+		  this.mostrarAnuncios();
 		  String anuncioAlvo;
 		  System.out.println("Digite o leilão para o qual deseja realizar um lance");
 		  anuncioAlvo = user_input.next();
 		  
 		  int aid = Integer.parseInt(anuncioAlvo);
 		  
-		  //OK
+		  /*
+		  if ( !ac.existsAnuncio(aid) ) {
+			  System.out.println("Leilao nao existe");
+			  return;
+		  } else if(!uc.existsUsuario(uid)){
+			  System.out.println("Usuario nao existe!");
+			  return;
+		  }
+		 
+		  
 		  if( ac.limiteDeLancesAtingido(uid, aid) ){
 		   System.out.println("O usuário atingiu seu limite de lances para este leilão.");
 		   this.mostrarMenuPrincipal();
 		   return;
 		  }
-		  
+		  */
 		  String lanceValorString;
 		  System.out.println("Digite o valor do lance");
 		  lanceValorString = user_input.next();
-		  int lanceValor = Integer.parseInt(lanceValorString);
+		  float lanceValor = Float.parseFloat(lanceValorString);
 		  
-		  
+		  /*
 		  if( !ac.valorMinimoObservado(aid, lanceValor) ){
 		   System.out.println("O valor informado está abaixo do valor de lance mínimo.");
 		   this.mostrarMenuPrincipal();
@@ -129,14 +147,32 @@ public class UserInterfaceView {
 			  System.out.println("O Lance foi realizado com sucesso!");
 			  this.mostrarMenuPrincipal();
 		  } else {
-			  System.out.println("O leilão desejado não foi encontrado.");
+			  System.out.println("Um error aconteceu");
 			  this.mostrarMenuPrincipal();
 			  return;
+		  }
+		  */
+		  
+		  try{
+			  ac.darLance(uid, aid, lanceValor);
+			  System.out.println("O Lance foi realizado com sucesso!");
+			  this.mostrarMenuPrincipal();
+		  }catch(UserInputException e){
+			  System.out.println(e.getMessage());
 		  }
 
 	}
 
 	private void mostrarAnuncios() {
+		ArrayList<Anuncio> all = this.ac.getAnuncios();
+		for(int i = 0; i < all.size(); i++){
+			System.out.println("--------- " + i + " -----------\n");
+			
+			System.out.println(all.get(i).toString());
+			
+			System.out.println("-----------------------\n");
+		}
+		
 
 	}
 

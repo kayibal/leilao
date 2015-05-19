@@ -35,7 +35,7 @@ public class Anuncio {
 		this.setPotencia(potencia);
 		this.setLanceMin(lanceMin);
 		//this.leilao = NULL;
-		//abstraído temporariamente
+		//abstraï¿½do temporariamente
 		this.setLeilao(new Leilao(5, 20, 60));
 		//this.pergunta = pergunta;
 	}
@@ -120,6 +120,15 @@ public class Anuncio {
 		this.perguntas = perguntas;
 	}
 	
-	
+	public String toString(){
+		return 	"Modelo: "	+ this.modelo +		"\n" +
+				"Ano: "		+ this.ano +		"\n" +
+				"Motor: " + this.motor +		"\n" +
+				"Placa: " + this.placa +		"\n" +
+				"Cor: " + this.cor +			"\n" +
+				"Marca: " + this.marca +		"\n" +
+				"Potencia " + this.potencia +	"\n" +
+				"Lance minimo:" + this.lanceMin+"\n";
+	}
 
 }

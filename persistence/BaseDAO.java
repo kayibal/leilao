@@ -13,6 +13,10 @@ public class BaseDAO<Type> {
 	public boolean save(Type entry) {
 		return data.add(entry);
 	}
+	
+	public int getID(Type object){
+		return data.indexOf(object);
+	}
 
 	public Type fetch(int ID) {
 		try{
@@ -22,8 +26,9 @@ public class BaseDAO<Type> {
 		}
 	}
 
-	public Type[] getAll() {
-		return (Type[]) data.toArray();
+	public ArrayList<Type> getAll() {
+		//return (Type[]) data.toArray();
+		return this.data;
 	}
 
 	public boolean delete(Type entry) {
