@@ -1,4 +1,5 @@
-package Business;
+package business;
+
 import java.util.List;
 
 public class AnuncioControl {
@@ -15,35 +16,35 @@ public class AnuncioControl {
 		String msg = "";
 		
 		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo modelo invalido\n";
+			msg += "Campo modelo inválido\n";
 			validInput = false;
 		}
 		if(!ano.matches("\\d{4}")){
-			msg += "Campo ano invalido\n";
+			msg += "Campo ano inválido\n";
 			validInput = false;
 		}
 		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo motor invalido\n";
+			msg += "Campo motor inválido\n";
 			validInput = false;
 		}
 		if(!placa.matches("\\D{3}-\\d{4}")){
-			msg += "Campo placa invalido\n";
+			msg += "Campo placa inválido\n";
 			validInput = false;
 		}
 		if(!cor.matches("\\D{3,12}")){
-			msg += "Campo cor invalido\n";
+			msg += "Campo cor inválido\n";
 			validInput = false;
 		}
 		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo marca invalido\n";
+			msg += "Campo marca inválido\n";
 			validInput = false;
 		}
 		if(!potencia.matches("\\d{4}")){
-			msg += "Campo potencia invalido\n";
+			msg += "Campo potência inválido\n";
 			validInput = false;
 		}
 		if(!lance.matches("\\d*.\\d*")){
-			msg += "Campo lance minimo invalido\n";
+			msg += "Campo lance mínimo inválido\n";
 			validInput = false;
 		}
 		
@@ -52,7 +53,7 @@ public class AnuncioControl {
 			//save a to database
 			return true;
 		} else {
-			System.out.println("Anuncio nao foi criado:\n" + msg);
+			System.out.println("Anúncio nao foi criado:\n" + msg);
 			return false;
 		}
 		
@@ -70,8 +71,22 @@ public class AnuncioControl {
 	public boolean fecharAnuncio(int aid) {
 		return false;
 	}
+	
+	public boolean limiteDeLancesAtingido(int uid, int aid){
+		Usuario u = getUsuarioFromID(uid);
+		Anuncio a = getAnuncioFromID(aid);
+		
+		if(u.getLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
+		else return false;
+	}
+	
+	public boolean valorMinimoObservado(int aid, int lanceValor){
+		Anuncio a;// = getfromdatabase
+		if(lanceValor >= a.getLanceMin()) return true;
+		else return false;
+	}
 
-	public boolean darLance(int uid, int aid) {
+	public boolean darLance(int uid, int aid, int lanceValor) {
 		return false;
 	}
 

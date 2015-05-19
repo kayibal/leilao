@@ -1,4 +1,5 @@
-package Business;
+package business;
+
 public class Pergunta {
 
 	private String texto;

@@ -1,6 +1,6 @@
 package persistence;
 
-public class BaseDAO {
+public class AnuncioDAO {
 
 	public void save() {
 
