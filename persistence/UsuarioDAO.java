@@ -1,25 +1,33 @@
 package persistence;
+import business.Usuario;
+import java.util.ArrayList;
 
-public class UsuarioDAO extends BaseDAO {
+public class UsuarioDAO {
+	
+	private ArrayList<Usuario> data;
 
-	public void save() {
-
+	public boolean save(Usuario entry) {
+		return data.add(entry);
 	}
 
-	public void fetch(int ID) {
-
+	public Usuario fetch(int ID) {
+		return data.get(ID);
 	}
 
-	public void getAll() {
-
+	public Usuario[] getAll() {
+		return (Usuario[]) data.toArray();
 	}
 
-	public void delete() {
-
+	public void delete(Usuario entry) {
+		data.remove(entry);
 	}
 
-	public void update() {
-
+	public boolean update(int ID, Usuario newEntry) {
+		if(data.set(ID, newEntry) != null){
+			return true;
+		}
+		return false;
 	}
 
 }
+
