@@ -1,6 +1,7 @@
 package business;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Usuario {
@@ -70,6 +71,19 @@ public class Usuario {
 
 	public List<Lance> getAllLances() {
 		return lances;
+	}
+	
+	public int getNumLancesFromLeilao(Leilao leilao){
+		int numLances=0;
+		Iterator<Lance> itrUsuario=lances.iterator();		
+		while(itrUsuario.hasNext()){
+			Lance lanceAtual=itrUsuario.next();
+			Iterator<Lance> itrLeilao=leilao.getLances().iterator();
+			while(itrLeilao.hasNext())
+				if(lanceAtual.equals(itrLeilao.next()))
+					numLances++;
+		}
+		return(numLances);
 	}
 	
 	public void addLance(Lance lance){
