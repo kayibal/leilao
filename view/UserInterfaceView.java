@@ -107,64 +107,33 @@ public class UserInterfaceView {
 
 	private void darLance() {
 		
-		  int uid = this.uc.getLoggedUserID();
-		  this.mostrarAnuncios();
-		  String anuncioAlvo;
-		  System.out.println("Digite o leilão para o qual deseja realizar um lance");
-		  anuncioAlvo = user_input.next();
-		  
-		  int aid = Integer.parseInt(anuncioAlvo);
-		  
-		  /*
-		  if ( !ac.existsAnuncio(aid) ) {
-			  System.out.println("Leilao nao existe");
-			  return;
-		  } else if(!uc.existsUsuario(uid)){
-			  System.out.println("Usuario nao existe!");
-			  return;
-		  }
-		 
-		  
-		  if( ac.limiteDeLancesAtingido(uid, aid) ){
-		   System.out.println("O usuário atingiu seu limite de lances para este leilão.");
-		   this.mostrarMenuPrincipal();
-		   return;
-		  }
-		  */
-		  String lanceValorString;
-		  System.out.println("Digite o valor do lance");
-		  lanceValorString = user_input.next();
-		  float lanceValor = Float.parseFloat(lanceValorString);
-		  
-		  /*
-		  if( !ac.valorMinimoObservado(aid, lanceValor) ){
-		   System.out.println("O valor informado está abaixo do valor de lance mínimo.");
-		   this.mostrarMenuPrincipal();
-		   return;
-		  }
-		  
-		  if( ac.darLance(uid, aid, lanceValor) ){
-			  System.out.println("O Lance foi realizado com sucesso!");
-			  this.mostrarMenuPrincipal();
-		  } else {
-			  System.out.println("Um error aconteceu");
-			  this.mostrarMenuPrincipal();
-			  return;
-		  }
-		  */
-		  
-		  try{
-			  ac.darLance(uid, aid, lanceValor);
-			  System.out.println("O Lance foi realizado com sucesso!");
-			  this.mostrarMenuPrincipal();
-		  }catch(UserInputException e){
-			  System.out.println(e.getMessage());
-		  }
+		int uid = this.uc.getLoggedUserID();
+		this.mostrarAnuncios();
+		String anuncioAlvo;
+		System.out.println("Digite o leilão para o qual deseja realizar um lance");
+		anuncioAlvo = user_input.next();
+
+		int aid = Integer.parseInt(anuncioAlvo);
+
+		String lanceValorString;
+		System.out.println("Digite o valor do lance");
+		lanceValorString = user_input.next();
+		float lanceValor = Float.parseFloat(lanceValorString);
+
+		try{
+		  ac.darLance(uid, aid, lanceValor);
+		  System.out.println("O Lance foi realizado com sucesso!");
+		  this.mostrarMenuPrincipal();
+		}catch(UserInputException e){
+		  System.out.println(e.getMessage());
+		}
 
 	}
 
 	private void mostrarAnuncios() {
+		
 		ArrayList<Anuncio> all = this.ac.getAnuncios();
+
 		for(int i = 0; i < all.size(); i++){
 			System.out.println("--------- " + i + " -----------\n");
 			

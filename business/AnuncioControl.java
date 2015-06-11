@@ -148,7 +148,7 @@ public class AnuncioControl {
 		}
 	}
 	
-	public boolean existsAnuncio(int id){
+	private boolean existsAnuncio(int id){
 		if(this.anuncioDAO.fetch(id) != null){
 			return true;
 		}

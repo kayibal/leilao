@@ -1,49 +1,46 @@
 package persistence;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 
-public class BaseDAO<Type> {
-
-	private ArrayList<Type> data;
+public abstract class BaseDAO<Type> {
 	
-	public BaseDAO(){
-		this.data = new ArrayList<Type>();
+	IDatabaseManager manager;
+	
+	public void setDatabaseManager(IDatabaseManager m){
+		this.manager = m;
 	}
-
-	public boolean save(Type entry) {
-		return data.add(entry);
+	/**
+	 * This method updates the Obj if it has an id or saves the object if there is no id set yet
+	 * @param Obj The Object to be saved
+	 * @return -1 if there was an error, an id corresponding to the saved object if update or save was successfull
+	 */
+	protected int save(Type Obj){
+		return -1;
 	}
 	
-	public int getID(Type object){
-		return data.indexOf(object);
+	/**
+	 * Retrieves a single object from the databse given the primary key
+	 * @param id
+	 * @return
+	 */
+	protected Type get(int id){
+		return null;
 	}
-
-	public Type fetch(int ID) {
-		try{
-			return data.get(ID);
-		} catch (IndexOutOfBoundsException e){
-			return null;
-		}
+	/**
+	 * returns a list of objects from the database given some filters
+	 * @param filters a map of strings
+	 * @return
+	 */
+	protected List<Type> fetch(Map<String,String> filters){
+		return null;
 	}
-
-	public ArrayList<Type> getAll() {
-		//return (Type[]) data.toArray();
-		return this.data;
-	}
-
-	public boolean delete(Type entry) {
-		return data.remove(entry);
-	}
-
-	public boolean update(int ID, Type newEntry) {
-		try{
-			if(data.set(ID, newEntry) != null){
-				return true;
-			}
-			return false;
-		} catch (IndexOutOfBoundsException e){
-			return false;
-		}
-	}
+	
+	/**
+	 * serializes the object into a database language
+	 * @param object
+	 * @return serialization string
+	 */
+	protected abstract String serialize(Type object);
 
 }
