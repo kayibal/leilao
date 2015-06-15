@@ -2,7 +2,14 @@ package business;
 
 import java.util.List;
 
-public class Anuncio {
+import persistence.AnuncioDAO;
+import persistence.ISerializable;
+
+public class Anuncio implements ISerializable {
+	
+	public static AnuncioDAO manager = new AnuncioDAO();
+	
+	int id;
 
 	private String modelo;
 
@@ -39,7 +46,15 @@ public class Anuncio {
 		this.setLeilao(new Leilao(5, 20, 60));
 		//this.pergunta = pergunta;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getModelo() {
 		return modelo;
 	}
@@ -118,6 +133,10 @@ public class Anuncio {
 
 	public void setPerguntas(List<Pergunta> perguntas) {
 		this.perguntas = perguntas;
+	}
+	
+	public void save(){
+		manager.save(this);
 	}
 	
 	public String toString(){

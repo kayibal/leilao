@@ -1,13 +1,13 @@
 package business;
-import persistence.BaseDAO;
+import persistence.IGenericDAO;
 
 public class UsuarioControl {
 
 	private int loggedInUser;
-	private BaseDAO<Usuario> usuarioDAO;
+	private IGenericDAO<Usuario> usuarioDAO;
 	
 	public UsuarioControl(){
-		usuarioDAO = new BaseDAO<Usuario>();
+		usuarioDAO = new IGenericDAO<Usuario>();
 		Usuario standard = new Usuario("Fulano", null, 0, "fulano", "password");
 		usuarioDAO.save(standard);
 		loggedInUser = usuarioDAO.getID(standard);

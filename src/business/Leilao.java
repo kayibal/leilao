@@ -3,8 +3,15 @@ package business;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Leilao {
+import persistence.ISerializable;
+import persistence.LeilaoDAO;
 
+public class Leilao implements ISerializable{
+	
+	public static LeilaoDAO manager = new LeilaoDAO();
+
+	int id;
+	
 	private int maxParticipantes;
 
 	private int maxLances;
@@ -24,6 +31,18 @@ public class Leilao {
 		this.lances = new ArrayList<>();
 		
 	}
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public int getMaxParticipantes() {
 		return maxParticipantes;
@@ -63,6 +82,10 @@ public class Leilao {
 
 	public void addLance(Lance lance){
 		this.lances.add(lance);
+	}
+	
+	public void save(){
+		manager.save(this);
 	}
 
 }

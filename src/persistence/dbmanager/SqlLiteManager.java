@@ -3,9 +3,15 @@ package persistence.dbmanager;
 import java.sql.*;
 
 public class SqlLiteManager implements IDatabaseManager {
-	static final String JDBC_DRIVER = "org.sqlite.JDBC";
-	private SqlLiteConfiguration config;
+	private static SqlLiteManager instance;
+	private static final String JDBC_DRIVER = "org.sqlite.JDBC";
+	private static SqlLiteConfiguration config;
 	private Connection connection = null;
+	
+	private SqlLiteManager(){
+		config = new SqlLiteConfiguration();
+	}
+	
 	@Override
 	public void setConfiguration(IDBConfiguration conf) {
 		if (conf instanceof SqlLiteConfiguration){
@@ -30,6 +36,13 @@ public class SqlLiteManager implements IDatabaseManager {
 		} else {
 			return connection; 
 		}
+	}
+	
+	public static SqlLiteManager getInstance(){
+		if(SqlLiteManager.instance == null){
+			SqlLiteManager.instance = new SqlLiteManager();
+		}
+		return SqlLiteManager.instance;
 	}
 
 }

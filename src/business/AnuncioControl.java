@@ -2,21 +2,21 @@ package business;
 
 import java.util.List;
 import exceptions.UserInputException;
-import persistence.BaseDAO;
+import persistence.IGenericDAO;
 import java.util.ArrayList;
 
 public class AnuncioControl {
 
 	private UsuarioControl usuarioControl;
-	private BaseDAO<Anuncio> anuncioDAO;
-	private BaseDAO<Leilao> leilaoDAO;
-	private BaseDAO<Lance> lanceDAO;
+	private IGenericDAO<Anuncio> anuncioDAO;
+	private IGenericDAO<Leilao> leilaoDAO;
+	private IGenericDAO<Lance> lanceDAO;
 	
 	public AnuncioControl(UsuarioControl uc){
 		this.usuarioControl = uc;
-		this.anuncioDAO = new BaseDAO<Anuncio>();
-		this.leilaoDAO = new BaseDAO<Leilao>();
-		this.lanceDAO = new BaseDAO<Lance>();
+		this.anuncioDAO = new IGenericDAO<Anuncio>();
+		this.leilaoDAO = new IGenericDAO<Leilao>();
+		this.lanceDAO = new IGenericDAO<Lance>();
 		this.createSampleData();
 	}
 
