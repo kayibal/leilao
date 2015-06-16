@@ -3,6 +3,8 @@ package view;
 import business.AnuncioControl;
 import business.UsuarioControl;
 import business.Anuncio;
+
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -115,18 +117,41 @@ public class UserInterfaceView {
 			try {
 				uc.trocarSenha(uc.getLoggedUserID(), newpass1);
 			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.getMessage();
 			}
-
 	}
 
 	private void mostrarLeiloes() {
+		ArrayList<Anuncio> anuncios=ac.getAnuncios();
+		Iterator<Anuncio> anunciosIt=anuncios.iterator();
+		Integer i=0;
+		Boolean error=false;
+		while(anunciosIt.hasNext()){
+			Anuncio anuncio=anunciosIt.next();
+			System.out.println(i.toString() + ")" +
+					anuncio.getMarca() + " " +
+					anuncio.getModelo() + " " +
+					anuncio.getAno() + " " +
+					anuncio.getCor() + " " +
+					"#" + anuncio.getId());
+			i++;
+		}
+		do{
+			System.out.println("Escolha um leilão:");
+			Integer lid=Integer.parseInt(user_input.next());
+			if(lid>=0 && lid<i){
+				error=false;
+				this.mostrarLeilao(anuncios.get(lid).getId());
+			}else{
+				System.out.println("Número inválido. Tente novamente.");
+				error=true;
+			}
+		}while(error);
 
 	}
 
-	private void mostrarLeilao() {
-
+	private void mostrarLeilao(int id) {
+		
 	}
 
 	private void darLance() {
