@@ -41,10 +41,8 @@ public class Anuncio implements ISerializable {
 		this.setMarca(marca);
 		this.setPotencia(potencia);
 		this.setLanceMin(lanceMin);
-		//this.leilao = NULL;
-		//abstra�do temporariamente
-		this.setLeilao(new Leilao(5, 20, 60));
-		//this.pergunta = pergunta;
+		this.leilao = null;
+		this.perguntas = null;
 	}
 	
 	public int getId() {
