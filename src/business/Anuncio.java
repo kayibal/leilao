@@ -5,6 +5,8 @@ import java.util.List;
 import persistence.AnuncioDAO;
 import persistence.ISerializable;
 
+import exceptions.BusinessException;
+
 public class Anuncio implements ISerializable {
 	
 	public static AnuncioDAO manager = new AnuncioDAO();
@@ -34,7 +36,7 @@ public class Anuncio implements ISerializable {
 	private List<Pergunta> perguntas;
 
 	public Anuncio(String modelo, Integer ano, String motor, String placa,
-			String cor, String marca, int potencia, Float lanceMin) {
+			String cor, String marca, int potencia, Float lanceMin) throws BusinessException{
 		this.setModelo(modelo);
 		this.setAno(ano);
 		this.setMotor(motor);
