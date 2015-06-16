@@ -26,7 +26,7 @@ public class Leilao implements ISerializable{
 		this.maxParticipantes = maxParticipantes;
 		this.maxLances = maxLances;
 		this.maxTempo = maxTempo;
-		
+		this.id = -1;
 		this.pontuacao = 0;//?
 		this.lances = new ArrayList<>();
 		
@@ -78,6 +78,10 @@ public class Leilao implements ISerializable{
 
 	public List<Lance> getLances() {
 		return lances;
+	}
+
+	public void setLances(List<Lance> lances) {
+		this.lances = lances;
 	}
 
 	public void addLance(Lance lance){

@@ -2,7 +2,7 @@ package business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import exceptions.UserInputException;
+import exceptions.BusinessException;
 import persistence.IGenericDAO;
 
 public class UsuarioControl {
@@ -65,7 +65,7 @@ public class UsuarioControl {
 			
 			return true;
 		} else {
-			throw new UserInputException("Usuario nao foi cadastrado:\n" + msg);
+			throw new BusinessException("Usuario nao foi cadastrado:\n" + msg);
 		}
 		
 		
@@ -98,7 +98,7 @@ public class UsuarioControl {
 			if(userlist==null){
 				msg += "Usuario ou Senha incorretos.";
 			}
-			throw new UserInputException(msg);
+			throw new BusinessException(msg);
 		}
 	}
 	

@@ -25,9 +25,9 @@ public class Usuario implements ISerializable{
 
 	private List<Lance> lances;
 
-	private Endereco endereco;
+	private String endereco;
 	
-	public Usuario(String nome, Endereco endereco, Integer CPF, int telefone, String username, String senha){
+	public Usuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha){
 		this.setNome(nome);
 		this.setEndereco(endereco);
 		this.setCPF(CPF);
@@ -35,6 +35,7 @@ public class Usuario implements ISerializable{
 		this.setUsername(username);
 		this.setSenha(senha);
 		this.lances = new ArrayList<>();
+		this.id = -1;
 	}
 	
 	public int getId() {
@@ -110,11 +111,11 @@ public class Usuario implements ISerializable{
 		this.lances = lances;
 	}
 
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
 	

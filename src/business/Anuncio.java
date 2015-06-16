@@ -28,6 +28,8 @@ public class Anuncio implements ISerializable {
 	private Float lanceMin;
 
 	private Leilao leilao;
+	
+	private Boolean fechado;
 
 	private List<Pergunta> perguntas;
 
@@ -43,8 +45,17 @@ public class Anuncio implements ISerializable {
 		this.setLanceMin(lanceMin);
 		this.leilao = null;
 		this.perguntas = null;
+		this.id = -1;
 	}
 	
+	public Boolean getFechado() {
+		return fechado;
+	}
+
+	public void setFechado(Boolean fechado) {
+		this.fechado = fechado;
+	}
+
 	public int getId() {
 		return id;
 	}
