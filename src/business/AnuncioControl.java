@@ -1,5 +1,6 @@
 package business;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import exceptions.BusinessException;
@@ -8,32 +9,22 @@ import java.util.ArrayList;
 
 public class AnuncioControl {
 
-	//private UsuarioControl usuarioControl;
-	//private IGenericDAO<Anuncio> anuncioDAO;
-	//private IGenericDAO<Leilao> leilaoDAO;
-	//private IGenericDAO<Lance> lanceDAO;
-	
-	//public AnuncioControl(UsuarioControl uc){
-		//this.usuarioControl = uc;
-		//this.anuncioDAO = new IGenericDAO<Anuncio>();
-		//this.leilaoDAO = new IGenericDAO<Leilao>();
-		//this.lanceDAO = new IGenericDAO<Lance>();
-		//this.createSampleData();
-	//}
-
-	public void aprovarAnuncio(int aid) {
-
+	public void aprovarAnuncio(int aid, int maxPart, int maxLances, int tempoLimite, Date dataHoraInicio) {
+		
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		
+		Leilao l = new Leilao(maxPart, maxLances, tempoLimite, dataHoraInicio);
+		a.setLeilao(l);
+		a.save();
 	}
 
-	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
+	public void criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
-	
 		try{
 			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, cor, placa,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
 			a.save();
 		} catch (BusinessException e) {
 			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());
-
 		}
 		
 		
@@ -57,7 +48,7 @@ public class AnuncioControl {
 	}
 
 	public ArrayList<Anuncio> getAnuncios() {
-		return Anuncio.manager.all();
+		return (ArrayList<Anuncio>) Anuncio.manager.all();
 	}
 
 	public Anuncio getAnuncio(int aid) {
@@ -65,6 +56,20 @@ public class AnuncioControl {
 	}
 
 	public boolean fecharAnuncio(int aid) {
+		
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		
+		if(a.getLeilao()==null) return false;
+		
+		if(!a.getLeilao().getLances().isEmpty()){
+			Lance max = null;
+			for(Lance l: a.getLeilao().getLances()){
+				if(max==null || l.getValor()>max.getValor()) max = l;
+			}
+			a.getLeilao().setVencedorID(max.getId());
+		}
+		a.setFechado(true);
+		
 		return false;
 	}
 	
@@ -91,7 +96,7 @@ public class AnuncioControl {
 				this.valorMinimoObservado(aid, lanceValor)){
 			
 			Lance l = new Lance(lanceValor);
-			Usuario u = (Usuario) Usuario.manager.get(uid);//this.usuarioControl.getUserFromID(uid);
+			Usuario u = (Usuario) Usuario.manager.get(uid);
 			Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 			
 			u.addLance(l);
@@ -114,23 +119,7 @@ public class AnuncioControl {
 		}
 	}
 
-	public List<Leilao> getLeiloes() {
-		return null;
-	}
-
-	public Leilao getLeilao(int lid) {
-		return null;
-	}
-
 	public boolean darPontucao(int aid, int p) {
-		return false;
-	}
-
-	public boolean criarPergunta(String text, int aid) {
-		return false;
-	}
-
-	public boolean criarResposta(String text, int pid) {
 		return false;
 	}
 

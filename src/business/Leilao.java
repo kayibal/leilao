@@ -1,5 +1,6 @@
 package business;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +18,24 @@ public class Leilao implements ISerializable{
 	private int maxLances;
 
 	private int maxTempo;
+	
+	private Date dataInicio;
+	
+	private int vencedorID;
 
 	private int pontuacao;
 
 	private List<Lance> lances;
 	
-	public Leilao(int maxParticipantes, int maxLances, int maxTempo){
+	public Leilao(int maxParticipantes, int maxLances, int maxTempo, Date dataInicio){
 		this.maxParticipantes = maxParticipantes;
 		this.maxLances = maxLances;
 		this.maxTempo = maxTempo;
 		this.id = -1;
-		this.pontuacao = 0;//?
+		this.setDataInicio(dataInicio);
+		//this.pontuacao = 0;//?
 		this.lances = new ArrayList<>();
-		
+		this.setVencedorID(-1);
 	}
 	
 	
@@ -90,6 +96,30 @@ public class Leilao implements ISerializable{
 	
 	public void save(){
 		manager.save(this);
+	}
+
+
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+
+
+	public int getVencedorID() {
+		return vencedorID;
+	}
+
+
+
+	public void setVencedorID(int vencedorID) {
+		this.vencedorID = vencedorID;
 	}
 
 }
