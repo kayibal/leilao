@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import business.Anuncio;
 import business.Lance;
 import business.Leilao;
 
 
 public class LeilaoDAO extends SqlGenericDAO {
 	
-	protected static String tableName = null;
+	protected static String tableName = "leiloes_leilao";
 	protected static LinkedHashMap<String,String> fields;
 	
 	public LeilaoDAO(){
@@ -56,6 +55,7 @@ public class LeilaoDAO extends SqlGenericDAO {
 			b.append(l.getMaxTempo()).append(", ");
 			b.append(l.getPontuacao()).append(", ");
 			
+			//refactoring
 			ArrayList<Lance> lances = (ArrayList<Lance>) l.getLances();
 			StringBuilder b2 = new StringBuilder();
 			String delim = "";

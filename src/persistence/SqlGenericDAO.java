@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	
 	protected SqlGenericDAO(){
 		this.manager = SqlLiteManager.getInstance();
+		initial();
 	}
 	
 	@Override
@@ -87,15 +87,31 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			if(rs.next()){			
 				return getObject(rs);
 			} else {
-				throw new SQLException("there were no records found with this id");
+				return null;
+				//throw new SQLException("there were no records found with this id");
 			}
 		} catch(SQLException e){
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public List<? extends ISerializable> all(){
+		Connection c = manager.getConnectionObject();
+		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
+		try{
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM " + getTableName() + ";");
+			while(rs.next()){
+				result.add(getObject(rs));
+			}
+			return result;
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
-	public List<ISerializable> fetch(Map<String, String> filters) {
+	public List<? extends ISerializable> fetch(Map<String, String> filters) {
 		Connection c = manager.getConnectionObject();
 		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
 		StringBuilder b = new StringBuilder();
@@ -121,6 +137,13 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 		} catch (SQLException e){
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public Boolean exists(int id){
+		if(get(id) != null){
+			return true;
+		}
+		return false;
 	}
 
 	@Override

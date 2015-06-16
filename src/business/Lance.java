@@ -11,7 +11,34 @@ public class Lance implements ISerializable{
 	int id;
 	
 	private Float valor;
+	Leilao leilao;
+	Usuario usuario;
 	
+	
+	public Float getValor() {
+		return valor;
+	}
+
+	public void setValor(Float valor) {
+		this.valor = valor;
+	}
+
+	public Leilao getLeilao() {
+		return leilao;
+	}
+
+	public void setLeilao(Leilao leilao) {
+		this.leilao = leilao;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	public Lance(Float valor){
 		this.valor = valor;
 	}

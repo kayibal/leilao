@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class AnuncioDAO extends SqlGenericDAO{
 
-	private static String tableName = "leilao_anuncio";
+	private static String tableName = "leiloes_anuncio";
 	protected static LinkedHashMap<String,String> fields;
 	
 	public AnuncioDAO(){
@@ -59,10 +59,10 @@ public class AnuncioDAO extends SqlGenericDAO{
 			b.append(a.getPotencia()).append(", ");
 			b.append(a.getLanceMin()).append(", ");
 			if (a.getLeilao().getId() > 0){
-				b.append(a.getLeilao().getId()).append(", ");
+				b.append(a.getLeilao().getId());
 			} else {
 				a.getLeilao().save();
-				b.append(a.getLeilao().getId()).append(", ");
+				b.append(a.getLeilao().getId());
 			}
 			return b.toString();
 		} else {
