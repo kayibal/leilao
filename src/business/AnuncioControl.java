@@ -27,53 +27,12 @@ public class AnuncioControl {
 
 	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws UserInputException {
 		
-		boolean validInput = true;
-		String msg = "";
-		
-		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo modelo invalido\n";
-			validInput = false;
-		}
-		if(!ano.matches("\\d{4}")){
-			msg += "Campo ano invalido\n";
-			validInput = false;
-		}
-		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo motor invalido\n";
-			validInput = false;
-		}
-		if(!placa.matches("\\D{3}-\\d{4}")){
-			msg += "Campo placa invalido\n";
-			validInput = false;
-		}
-		if(!cor.matches("\\D{3,12}")){
-			msg += "Campo cor invalido\n";
-			validInput = false;
-		}
-		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo marca invalido\n";
-			validInput = false;
-		}
-		if(!potencia.matches("\\d{4}")){
-			msg += "Campo potencia invalido\n";
-			validInput = false;
-		}
-		if(!lance.matches("\\d*.\\d*")){
-			msg += "Campo lance minimo invalido\n";
-			validInput = false;
-		}
-		
-		if(validInput == true){
+	
+		try{
 			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, cor, placa,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
 			a.save();
-			/*
-			HashMap<String,String> filters = new HashMap<String,String>();
-			filters.put("modelo","bmw");
-			ArrayList<Anuncio> list = (ArrayList<Anuncio>) Anuncio.manager.fetch(filters);
-			*/
-			return true;
-		} else {
-			throw new UserInputException("Anuncio nao foi criado:\n" + msg);
+		} catch (BusinessException e) {
+			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());
 		}
 		
 		

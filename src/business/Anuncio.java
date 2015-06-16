@@ -31,7 +31,7 @@ public class Anuncio implements ISerializable {
 
 	private List<Pergunta> perguntas;
 
-	public Anuncio(String modelo, int ano, String motor, String placa,
+	public Anuncio(String modelo, Integer ano, String motor, String placa,
 			String cor, String marca, int potencia, Float lanceMin) {
 		this.setModelo(modelo);
 		this.setAno(ano);
@@ -57,64 +57,104 @@ public class Anuncio implements ISerializable {
 		return modelo;
 	}
 
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
+	public void setModelo(String modelo) throws BusinessException{
+		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
+			this.modelo = modelo;
+		}
+		else{
+			throw new BusinessException("Modelo Invalido\n");
+		}
 	}
 
 	public int getAno() {
 		return ano;
 	}
 
-	public void setAno(int ano) {
-		this.ano = ano;
+	public void setAno(Integer ano) throws BusinessException{
+		if(!Integer.toString(ano).matches("\\d{4}")){
+			this.ano = ano;
+		}
+		else{
+			throw new BusinessException("Ano Invalido\n");
+		}
 	}
 
 	public String getMotor() {
 		return motor;
 	}
 
-	public void setMotor(String motor) {
-		this.motor = motor;
+	public void setMotor(String motor) throws BusinessException{
+		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
+			this.motor = motor;
+		}
+		else{
+			throw new BusinessException("Motor Invalido\n");
+		}
 	}
 
 	public String getPlaca() {
 		return placa;
 	}
 
-	public void setPlaca(String placa) {
-		this.placa = placa;
+	public void setPlaca(String placa) throws BusinessException{
+		if(!placa.matches("\\D{3}-\\d{4}")){
+			this.placa = placa;
+		}
+		else{
+			throw new BusinessException("Placa Invalida\n");
+		}
 	}
 
 	public String getCor() {
 		return cor;
 	}
 
-	public void setCor(String cor) {
-		this.cor = cor;
+	public void setCor(String cor) throws BusinessException{
+		if(!cor.matches("\\D{3,12}")){
+			this.cor = cor;
+		}
+		else{
+			throw new BusinessException("Cor Invalida\n");
+		}
 	}
 
 	public String getMarca() {
 		return marca;
 	}
 
-	public void setMarca(String marca) {
-		this.marca = marca;
+	public void setMarca(String marca) throws BusinessException{
+		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
+			this.marca = marca;
+		}
+		else{
+			throw new BusinessException("Marca Invalida\n");
+		}
 	}
 
 	public int getPotencia() {
 		return potencia;
 	}
 
-	public void setPotencia(int potencia) {
-		this.potencia = potencia;
+	public void setPotencia(int potencia) throws BusinessException{
+		if(!Integer.toString(potencia).matches("\\d{4}")){
+			this.potencia = potencia;
+		}
+		else{
+			throw new BusinessException("Potencia Invalida\n");
+		}
 	}
 
 	public Float getLanceMin() {
 		return lanceMin;
 	}
 
-	public void setLanceMin(Float lanceMin) {
-		this.lanceMin = lanceMin;
+	public void setLanceMin(Float lanceMin) throws BusinessException{
+		if(!Float.toString(lanceMin).matches("\\d*.\\d*")){
+			this.lanceMin = lanceMin;
+		}
+		else{
+			throw new BusinessException("Lance Minimo Invalido\n");
+		}
 	}
 
 	public Leilao getLeilao() {

@@ -25,9 +25,9 @@ public class Usuario implements ISerializable{
 
 	private List<Lance> lances;
 
-	private Endereco endereco;
+	private String endereco;
 	
-	public Usuario(String nome, Endereco endereco, Integer CPF, int telefone, String username, String senha){
+	public Usuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException{
 		this.setNome(nome);
 		this.setEndereco(endereco);
 		this.setCPF(CPF);
@@ -49,8 +49,13 @@ public class Usuario implements ISerializable{
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNome(String nome) throws BusinessException{
+		if(!nome.matches("[\\w,\\/,_,-]{6,30}")){
+			this.nome = nome;
+		}
+		else{
+			throw new BusinessException("Nome Invalido\n");
+		}
 	}
 
 	public Integer getCPF() {
@@ -65,16 +70,26 @@ public class Usuario implements ISerializable{
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String username) throws BusinessException{
+		if(!username.matches("[\\w,\\d,]{5,20}")){
+			this.username = username;
+		}
+		else{
+			throw new BusinessException("Username Invalido\n");
+		}
 	}
 
 	public String getSenha() {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setSenha(String senha) throws BusinessException {
+		if(!senha.matches("[\\w,\\d]{4,20}")){
+			this.senha = senha;
+		} else {
+			throw new BusinessException("Senha Invalida\n");
+		}
+		
 	}
 
 	public int getTelefone() {
@@ -110,12 +125,17 @@ public class Usuario implements ISerializable{
 		this.lances = lances;
 	}
 
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void setEndereco(String endereco) throws BusinessException{
+		if(!endereco.matches("[\\w,\\/,_,-]{5,40}")){
+			this.endereco = endereco;
+		}
+		else{
+			throw new BusinessException("Endereco Invalido\n");
+		}
 	}
 	
 	public void save(){
