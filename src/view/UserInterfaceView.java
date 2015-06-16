@@ -106,6 +106,18 @@ public class UserInterfaceView {
 	}
 
 	private void trocarSenha() {
+		String newpass1, newpass2;
+		System.out.println("Digite sua nova senha:");
+		newpass1=user_input.next();
+		System.out.println("Confirme sua nova senha:");
+		newpass2=user_input.next();
+		if(newpass1==newpass2)
+			try {
+				uc.trocarSenha(uc.getLoggedUserID(), newpass1);
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	}
 
