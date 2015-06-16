@@ -71,7 +71,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setModelo(String modelo) throws BusinessException{
-		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
+		if(modelo.matches("[\\w,\\/,_,-]{3,20}")){
 			this.modelo = modelo;
 		}
 		else{
@@ -84,7 +84,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setAno(Integer ano) throws BusinessException{
-		if(!Integer.toString(ano).matches("\\d{4}")){
+		if(Integer.toString(ano).matches("\\d{4}")){
 			this.ano = ano;
 		}
 		else{
@@ -97,7 +97,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setMotor(String motor) throws BusinessException{
-		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
+		if(motor.matches("[\\w,\\/,_,-]{3,20}")){
 			this.motor = motor;
 		}
 		else{
@@ -110,7 +110,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setPlaca(String placa) throws BusinessException{
-		if(!placa.matches("\\D{3}-\\d{4}")){
+		if(placa.matches("\\D{3}-\\d{4}")){
 			this.placa = placa;
 		}
 		else{
@@ -123,7 +123,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setCor(String cor) throws BusinessException{
-		if(!cor.matches("\\D{3,12}")){
+		if(cor.matches("\\D{3,12}")){
 			this.cor = cor;
 		}
 		else{
@@ -136,7 +136,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setMarca(String marca) throws BusinessException{
-		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
+		if(marca.matches("[\\w,\\/,_,-]{3,20}")){
 			this.marca = marca;
 		}
 		else{
@@ -149,7 +149,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setPotencia(int potencia) throws BusinessException{
-		if(!Integer.toString(potencia).matches("\\d{4}")){
+		if(Integer.toString(potencia).matches("\\d{4}")){
 			this.potencia = potencia;
 		}
 		else{
@@ -162,7 +162,7 @@ public class Anuncio implements ISerializable {
 	}
 
 	public void setLanceMin(Float lanceMin) throws BusinessException{
-		if(!Float.toString(lanceMin).matches("\\d*.\\d*")){
+		if(Float.toString(lanceMin).matches("\\d*.\\d*")){
 			this.lanceMin = lanceMin;
 		}
 		else{
