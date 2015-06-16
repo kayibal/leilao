@@ -1,73 +1,39 @@
 package business;
 
+import java.util.HashMap;
 import java.util.List;
-import exceptions.UserInputException;
+import exceptions.BusinessException;
 import persistence.IGenericDAO;
 import java.util.ArrayList;
 
 public class AnuncioControl {
 
-	private UsuarioControl usuarioControl;
-	private IGenericDAO<Anuncio> anuncioDAO;
-	private IGenericDAO<Leilao> leilaoDAO;
-	private IGenericDAO<Lance> lanceDAO;
+	//private UsuarioControl usuarioControl;
+	//private IGenericDAO<Anuncio> anuncioDAO;
+	//private IGenericDAO<Leilao> leilaoDAO;
+	//private IGenericDAO<Lance> lanceDAO;
 	
-	public AnuncioControl(UsuarioControl uc){
-		this.usuarioControl = uc;
-		this.anuncioDAO = new IGenericDAO<Anuncio>();
-		this.leilaoDAO = new IGenericDAO<Leilao>();
-		this.lanceDAO = new IGenericDAO<Lance>();
-		this.createSampleData();
-	}
+	//public AnuncioControl(UsuarioControl uc){
+		//this.usuarioControl = uc;
+		//this.anuncioDAO = new IGenericDAO<Anuncio>();
+		//this.leilaoDAO = new IGenericDAO<Leilao>();
+		//this.lanceDAO = new IGenericDAO<Lance>();
+		//this.createSampleData();
+	//}
 
 	public void aprovarAnuncio(int aid) {
 
 	}
 
-	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws UserInputException {
+	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
-		boolean validInput = true;
-		String msg = "";
-		
-		if(!modelo.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo modelo inv�lido\n";
-			validInput = false;
-		}
-		if(!ano.matches("\\d{4}")){
-			msg += "Campo ano inv�lido\n";
-			validInput = false;
-		}
-		if(!motor.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo motor inv�lido\n";
-			validInput = false;
-		}
-		if(!placa.matches("\\D{3}-\\d{4}")){
-			msg += "Campo placa inv�lido\n";
-			validInput = false;
-		}
-		if(!cor.matches("\\D{3,12}")){
-			msg += "Campo cor inv�lido\n";
-			validInput = false;
-		}
-		if(!marca.matches("[\\w,\\/,_,-]{3,20}")){
-			msg += "Campo marca inv�lido\n";
-			validInput = false;
-		}
-		if(!potencia.matches("\\d{4}")){
-			msg += "Campo pot�ncia inv�lido\n";
-			validInput = false;
-		}
-		if(!lance.matches("\\d*.\\d*")){
-			msg += "Campo lance m�nimo inv�lido\n";
-			validInput = false;
-		}
-		
-		if(validInput == true){
+	
+		try{
 			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, cor, placa,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
-			this.anuncioDAO.save(a);
-			return true;
-		} else {
-			throw new UserInputException("An�ncio nao foi criado:\n" + msg);
+			a.save();
+		} catch (BusinessException e) {
+			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());
+
 		}
 		
 		
@@ -85,13 +51,13 @@ public class AnuncioControl {
 		try{
 			criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lance);
 			criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lance);
-		} catch (UserInputException e){
+		} catch (BusinessException e){
 			
 		}
 	}
 
 	public ArrayList<Anuncio> getAnuncios() {
-		return this.anuncioDAO.getAll();
+		return Anuncio.manager.all();
 	}
 
 	public Anuncio getAnuncio(int aid) {
@@ -103,30 +69,30 @@ public class AnuncioControl {
 	}
 	
 	private boolean limiteDeLancesAtingido(int uid, int aid){
-		Usuario u = this.usuarioControl.getUserFromID(uid);
-		Anuncio a = this.anuncioDAO.fetch(aid);
+		Usuario u = (Usuario) Usuario.manager.get(uid);
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		
 		if(u.getNumLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
 		else return false;
 	}
 	
 	private boolean valorMinimoObservado(int aid, Float lanceValor){
-		Anuncio a = this.anuncioDAO.fetch(aid);
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		
 		if(lanceValor >= a.getLanceMin()) return true;
 		else return false;
 	}
 
-	public boolean darLance(int uid, int aid, float lanceValor) throws UserInputException {
+	public boolean darLance(int uid, int aid, float lanceValor) throws BusinessException {
 		
-		if(this.existsAnuncio(aid) && 
-				this.usuarioControl.existsUsuario(uid) &&
+		if(Anuncio.manager.exists(aid) && 
+				Usuario.manager.exists(uid) &&
 				!this.limiteDeLancesAtingido(uid, aid) && 
 				this.valorMinimoObservado(aid, lanceValor)){
 			
 			Lance l = new Lance(lanceValor);
-			Usuario u = this.usuarioControl.getUserFromID(uid);
-			Anuncio a = this.anuncioDAO.fetch(aid);
+			Usuario u = (Usuario) Usuario.manager.get(uid);//this.usuarioControl.getUserFromID(uid);
+			Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 			
 			u.addLance(l);
 			a.getLeilao().addLance(l);
@@ -135,24 +101,17 @@ public class AnuncioControl {
 			
 		} else {
 			//build Exception
-			String msg = "Aconteceram os seguintes erros: \n";
-			if(this.existsAnuncio(aid) && this.usuarioControl.existsUsuario(uid)){
+			String msg = "Ocorreram os seguintes erros: \n";
+			if(Anuncio.manager.exists(aid) && Usuario.manager.exists(uid)){
 				if(this.limiteDeLancesAtingido(uid, aid)) msg += "O usuario atingiu seu limite de lances para este leilao \n";
 			
 				if(!this.valorMinimoObservado(aid, lanceValor)) msg += "O valor informado esta abaixo do valor do lance minimo\n";
 			} else {
-				if( !this.existsAnuncio(aid) ) msg += "Anuncio nao foi encontrado";
-				if( !this.usuarioControl.existsUsuario(uid) ) msg += "Usuario nao foi encontrado";
+				if( !Anuncio.manager.exists(aid) ) msg += "Anuncio nao foi encontrado";
+				if( !Usuario.manager.exists(uid) ) msg += "Usuario nao foi encontrado";
 			}
-			throw new UserInputException(msg);
+			throw new BusinessException(msg);
 		}
-	}
-	
-	private boolean existsAnuncio(int id){
-		if(this.anuncioDAO.fetch(id) != null){
-			return true;
-		}
-		return false;
 	}
 
 	public List<Leilao> getLeiloes() {

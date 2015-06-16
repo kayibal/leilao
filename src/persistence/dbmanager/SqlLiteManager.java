@@ -15,9 +15,9 @@ public class SqlLiteManager implements IDatabaseManager {
 	@Override
 	public void setConfiguration(IDBConfiguration conf) {
 		if (conf instanceof SqlLiteConfiguration){
-			this.config = (SqlLiteConfiguration) conf;
+			config = (SqlLiteConfiguration) conf;
 		} else {
-			//TODO throw some db error and exit programm as error would be fatal
+			throw new IllegalArgumentException("Expected instance of SqlLiteConfiguration");
 		}
 	}
 

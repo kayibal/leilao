@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Usuario {
+import persistence.UsuarioDAO;
+import persistence.ISerializable;
+
+public class Usuario implements ISerializable{
+	
+	public static UsuarioDAO manager = new UsuarioDAO();
+	
+	int id;
 
 	private String nome;
 
@@ -18,23 +25,38 @@ public class Usuario {
 
 	private List<Lance> lances;
 
-	private Endereco endereco;
+	private String endereco;
 	
-	public Usuario(String nome, Endereco endereco, Integer CPF, String username, String senha){
-		this.nome = nome;
-		this.endereco = endereco;
-		this.CPF = CPF;
-		this.username = username;
-		this.senha = senha;
+	public Usuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException{
+		this.setNome(nome);
+		this.setEndereco(endereco);
+		this.setCPF(CPF);
+		this.setTelefone(telefone);
+		this.setUsername(username);
+		this.setSenha(senha);
 		this.lances = new ArrayList<>();
+		this.id = -1;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNome(String nome) throws BusinessException{
+		if(!nome.matches("[\\w,\\/,_,-]{6,30}")){
+			this.nome = nome;
+		}
+		else{
+			throw new BusinessException("Nome Invalido\n");
+		}
 	}
 
 	public Integer getCPF() {
@@ -49,16 +71,26 @@ public class Usuario {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String username) throws BusinessException{
+		if(!username.matches("[\\w,\\d,]{5,20}")){
+			this.username = username;
+		}
+		else{
+			throw new BusinessException("Username Invalido\n");
+		}
 	}
 
 	public String getSenha() {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setSenha(String senha) throws BusinessException {
+		if(!senha.matches("[\\w,\\d]{4,20}")){
+			this.senha = senha;
+		} else {
+			throw new BusinessException("Senha Invalida\n");
+		}
+		
 	}
 
 	public int getTelefone() {
@@ -89,13 +121,41 @@ public class Usuario {
 	public void addLance(Lance lance){
 		this.lances.add(lance);
 	}
+	
+	public void setLances(ArrayList<Lance> lances){
+		this.lances = lances;
+	}
 
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+<<<<<<< HEAD
+	public void setEndereco(String endereco) throws BusinessException{
+		if(!endereco.matches("[\\w,\\/,_,-]{5,40}")){
+			this.endereco = endereco;
+		}
+		else{
+			throw new BusinessException("Endereco Invalido\n");
+		}
+=======
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
+>>>>>>> 9b05926688d86e7b4b133932817579c6c76d83eb
 	}
+	
+	public void save(){
+		manager.save(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", CPF=" + CPF
+				+ ", username=" + username + ", senha=" + senha + ", telefone="
+				+ telefone + ", lances=" + lances + ", endereco=" + endereco
+				+ "]";
+	}
+	
+
 
 }
