@@ -23,6 +23,7 @@ public class AnuncioDAO extends SqlGenericDAO{
 		fields.put("marca", 	"TEXT NOT NULL");
 		fields.put("potencia", 	"INTEGER NOT NULL");
 		fields.put("lance_min", "REAL NOT NULL");
+		fields.put("fechado", 	"INTEGER NOT NULL");
 		fields.put("leilao", 	"INTEGER UNIQUE");	//can be null
 	}
 	
@@ -37,15 +38,15 @@ public class AnuncioDAO extends SqlGenericDAO{
 		String marca = rs.getString("marca");
 		int potencia = rs.getInt("potencia");
 		Float lanceMin = rs.getFloat("lance_min");
+		boolean fechado = (1 == rs.getInt("fechado"));
 		int leilaoId = rs.getInt("leilao");
 		
 		Leilao leilao = null;
 		if(!rs.wasNull())
 			leilao = (Leilao) Leilao.manager.get(leilaoId);
 		
-		Anuncio result = new Anuncio(modelo, ano, motor, placa, cor, marca, potencia, lanceMin);
-		result.setLeilao(leilao);
-		result.setId(id);
+		Anuncio result = new Anuncio();
+		result.setAttributes(id, modelo, ano, motor, placa, cor, marca, potencia, lanceMin, leilao, fechado);
 		return  result;
 	}
 	

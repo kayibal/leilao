@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import exceptions.BusinessException;
+
 import persistence.UsuarioDAO;
 import persistence.ISerializable;
 
@@ -26,7 +28,6 @@ public class Usuario implements ISerializable{
 	private List<Lance> lances;
 
 	private String endereco;
-	
 	public Usuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException{
 		this.setNome(nome);
 		this.setEndereco(endereco);
@@ -38,6 +39,31 @@ public class Usuario implements ISerializable{
 		this.id = -1;
 	}
 	
+	public Usuario(){}
+	
+	/**
+	 * This pseudo constructor is used only by persistence to invoke an object from the database
+	 * @param id
+	 * @param nome
+	 * @param cPF
+	 * @param username
+	 * @param senha
+	 * @param telefone
+	 * @param lances
+	 * @param endereco
+	 */
+	public void setAttributes(int id, String nome, Integer cPF, String username,
+			String senha, int telefone, List<Lance> lances, String endereco) {
+		this.id = id;
+		this.nome = nome;
+		CPF = cPF;
+		this.username = username;
+		this.senha = senha;
+		this.telefone = telefone;
+		this.lances = lances;
+		this.endereco = endereco;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -130,7 +156,6 @@ public class Usuario implements ISerializable{
 		return endereco;
 	}
 
-<<<<<<< HEAD
 	public void setEndereco(String endereco) throws BusinessException{
 		if(!endereco.matches("[\\w,\\/,_,-]{5,40}")){
 			this.endereco = endereco;
@@ -138,10 +163,20 @@ public class Usuario implements ISerializable{
 		else{
 			throw new BusinessException("Endereco Invalido\n");
 		}
-=======
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
->>>>>>> 9b05926688d86e7b4b133932817579c6c76d83eb
+	}
+	
+	/**
+	 * Anuncio tem que ter Leilao
+	 * @param uid
+	 * @param aid
+	 * @return
+	 */
+	public boolean limiteDeLancesAtingido(int aid){
+		Usuario u = this;
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		
+		if(u.getNumLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
+		else return false;
 	}
 	
 	public void save(){

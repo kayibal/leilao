@@ -139,6 +139,22 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 		}
 	}
 	
+	public List<? extends ISerializable> fetch(String filters) {
+		Connection c = manager.getConnectionObject();
+		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
+
+		try{
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM " + getTableName() + " WHERE " + filters + ";");
+			while(rs.next()){
+				result.add(getObject(rs));
+			}
+			return result;
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public Boolean exists(int id){
 		if(get(id) != null){
 			return true;

@@ -35,12 +35,10 @@ public class UsuarioControl {
 		
 	}
 
-	public boolean trocarSenha(int uid, String senhaNova) throws BusinessException {
-		
+	public void trocarSenha(int uid, String senhaNova) throws BusinessException {
 		Usuario user = (Usuario) Usuario.manager.get(uid);
 		user.setSenha(senhaNova);
 		user.save();
-			
 	}
 
 	public boolean fazerLogin(String username, String senha) throws BusinessException {
@@ -73,6 +71,17 @@ public class UsuarioControl {
 	
 	public Usuario getUserFromID(int id){
 		return (Usuario) Usuario.manager.get(id);
+	}
+	
+	public void darPontucao(int aid, int p) throws BusinessException {
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		Leilao l = a.getLeilao();
+		if(l.getVencedorID() > -1){
+			l.setPontuacao(p);
+			l.save();
+		} else {
+			throw new BusinessException("Voce nao pode dar pontuacao nesse leilao");
+		}
 	}
 	
 	public int getLoggedUserID(){

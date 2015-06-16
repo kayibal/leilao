@@ -42,12 +42,11 @@ public class UsuarioDAO extends SqlGenericDAO{
 		@SuppressWarnings("unchecked")
 		ArrayList<Lance> lances = (ArrayList<Lance>) Lance.manager.fetch(filters);
 		
-		Usuario u;
-		u = new Usuario(nome, endereco, CPF, telefone, username, senha);
+		Usuario u = new Usuario();
+		u.setAttributes(id, nome, CPF, username, senha, telefone, lances, endereco);
 		if(rs.getInt("mediador") == 1)
 			u = (Mediador) u;
-		u.setLances(lances);
-		u.setId(id);
+
 		return u;
 	}
 	

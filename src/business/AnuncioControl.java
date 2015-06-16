@@ -25,7 +25,7 @@ public class AnuncioControl {
 
 	}
 
-	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
+	public void criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
 	
 		try{
@@ -56,82 +56,41 @@ public class AnuncioControl {
 		}
 	}
 
-	public ArrayList<Anuncio> getAnuncios() {
-		return Anuncio.manager.all();
-	}
-
-	public Anuncio getAnuncio(int aid) {
-		return null;
-	}
-
 	public boolean fecharAnuncio(int aid) {
+		//TODO
 		return false;
 	}
 	
-	private boolean limiteDeLancesAtingido(int uid, int aid){
+
+	public void darLance(int uid, int aid, float lanceValor) throws BusinessException {
+		
 		Usuario u = (Usuario) Usuario.manager.get(uid);
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		
-		if(u.getNumLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
-		else return false;
-	}
-	
-	private boolean valorMinimoObservado(int aid, Float lanceValor){
-		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		
-		if(lanceValor >= a.getLanceMin()) return true;
-		else return false;
-	}
-
-	public boolean darLance(int uid, int aid, float lanceValor) throws BusinessException {
-		
-		if(Anuncio.manager.exists(aid) && 
-				Usuario.manager.exists(uid) &&
-				!this.limiteDeLancesAtingido(uid, aid) && 
-				this.valorMinimoObservado(aid, lanceValor)){
+		if(!u.limiteDeLancesAtingido(a.getId()) && a.valorMinimoObservado(lanceValor)){
 			
-			Lance l = new Lance(lanceValor);
-			Usuario u = (Usuario) Usuario.manager.get(uid);//this.usuarioControl.getUserFromID(uid);
-			Anuncio a = (Anuncio) Anuncio.manager.get(aid);
-			
-			u.addLance(l);
-			a.getLeilao().addLance(l);
-			
-			return true;
-			
-		} else {
-			//build Exception
-			String msg = "Ocorreram os seguintes erros: \n";
-			if(Anuncio.manager.exists(aid) && Usuario.manager.exists(uid)){
-				if(this.limiteDeLancesAtingido(uid, aid)) msg += "O usuario atingiu seu limite de lances para este leilao \n";
-			
-				if(!this.valorMinimoObservado(aid, lanceValor)) msg += "O valor informado esta abaixo do valor do lance minimo\n";
+			if(a.getLeilao() != null){
+				Lance l = new Lance(lanceValor,a.getLeilao(),u);
+				l.save();
 			} else {
-				if( !Anuncio.manager.exists(aid) ) msg += "Anuncio nao foi encontrado";
-				if( !Usuario.manager.exists(uid) ) msg += "Usuario nao foi encontrado";
+				throw new BusinessException("O anuncio selecionado não tem nenhuma leilao");
 			}
+		} else {
+			String msg = "Ocorreram os seguintes erros: \n";
+			if(u.limiteDeLancesAtingido(a.getId())) msg += "O usuario atingiu seu limite de lances para este leilao \n";
+			if(!a.valorMinimoObservado(lanceValor)) msg += "O valor informado esta abaixo do valor do lance minimo\n";
 			throw new BusinessException(msg);
 		}
+	
 	}
-
-	public List<Leilao> getLeiloes() {
-		return null;
+	
+	public ArrayList<Anuncio> getAnuncioPendentes(){
+		return (ArrayList<Anuncio>) Anuncio.manager.fetch("`leilao` IS NULL");
 	}
-
-	public Leilao getLeilao(int lid) {
-		return null;
-	}
-
-	public boolean darPontucao(int aid, int p) {
-		return false;
-	}
-
-	public boolean criarPergunta(String text, int aid) {
-		return false;
-	}
-
-	public boolean criarResposta(String text, int pid) {
-		return false;
+	
+	public ArrayList<Anuncio> getLeiloesAtivas(){
+		return (ArrayList<Anuncio>) Anuncio.manager.fetch("`leilao` IS NOT NULL AND `fechado` = 0");
 	}
 
 }
