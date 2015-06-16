@@ -99,7 +99,7 @@ public class UserInterfaceView {
 			password=user_input.next();
 			try{
 				uc.fazerLogin(user,password);
-			}catch(UserInputException ex){
+			}catch(BusinessException ex){
 				System.out.println("Usuário ou senha incorretos. Tente novamente.");
 			}
 		}while(true);
