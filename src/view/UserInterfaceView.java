@@ -76,7 +76,7 @@ public class UserInterfaceView {
 		potencia = user_input.next();
 		
 		String lanceMin;
-		System.out.println("Digite o lance minimo de seu an�ncio");
+		System.out.println("Digite o lance minimo de seu anúncio");
 		lanceMin = user_input.next();
 		
 		try{
@@ -89,11 +89,35 @@ public class UserInterfaceView {
 		
 	}
 
-	private void fazerLogin() {
-
+	public void fazerLogin() {
+		String user,password;
+		System.out.println("Sistema de Leilao");
+		do{
+			System.out.println("Digite seu usuário:");
+			user=user_input.next();
+			System.out.println("Digite sua senha:");
+			password=user_input.next();
+			try{
+				uc.fazerLogin(user,password);
+			}catch(BusinessException ex){
+				System.out.println("Usuário ou senha incorretos. Tente novamente.");
+			}
+		}while(true);
 	}
 
 	private void trocarSenha() {
+		String newpass1, newpass2;
+		System.out.println("Digite sua nova senha:");
+		newpass1=user_input.next();
+		System.out.println("Confirme sua nova senha:");
+		newpass2=user_input.next();
+		if(newpass1==newpass2)
+			try {
+				uc.trocarSenha(uc.getLoggedUserID(), newpass1);
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 	}
 
