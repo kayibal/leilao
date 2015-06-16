@@ -4,6 +4,9 @@ import persistence.ISerializable;
 import persistence.LanceDAO;
 
 public class Lance implements ISerializable{
+	public Lance(Float valor){
+		this.valor=valor;
+	}
 	
 	public static LanceDAO manager = new LanceDAO();
 	
