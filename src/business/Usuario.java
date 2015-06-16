@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Usuario {
+import persistence.UsuarioDAO;
+import persistence.ISerializable;
+
+public class Usuario implements ISerializable{
+	
+	public static UsuarioDAO manager = new UsuarioDAO();
+	
+	int id;
 
 	private String nome;
 
@@ -20,13 +27,22 @@ public class Usuario {
 
 	private Endereco endereco;
 	
-	public Usuario(String nome, Endereco endereco, Integer CPF, String username, String senha){
-		this.nome = nome;
-		this.endereco = endereco;
-		this.CPF = CPF;
-		this.username = username;
-		this.senha = senha;
+	public Usuario(String nome, Endereco endereco, Integer CPF, int telefone, String username, String senha){
+		this.setNome(nome);
+		this.setEndereco(endereco);
+		this.setCPF(CPF);
+		this.setTelefone(telefone);
+		this.setUsername(username);
+		this.setSenha(senha);
 		this.lances = new ArrayList<>();
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -89,6 +105,10 @@ public class Usuario {
 	public void addLance(Lance lance){
 		this.lances.add(lance);
 	}
+	
+	public void setLances(ArrayList<Lance> lances){
+		this.lances = lances;
+	}
 
 	public Endereco getEndereco() {
 		return endereco;
@@ -97,5 +117,19 @@ public class Usuario {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+	
+	public void save(){
+		manager.save(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", CPF=" + CPF
+				+ ", username=" + username + ", senha=" + senha + ", telefone="
+				+ telefone + ", lances=" + lances + ", endereco=" + endereco
+				+ "]";
+	}
+	
+
 
 }
