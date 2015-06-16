@@ -31,6 +31,7 @@ public class UserInterfaceView {
 		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
 		System.out.println("3. Mostrar Anúncios");
+		System.out.println("4. Trocar senha");
 		
 		selection = user_input.next();
 		switch(selection.trim()){
@@ -42,6 +43,10 @@ public class UserInterfaceView {
 				break;
 			case "3":
 				this.mostrarAnuncios();
+				this.mostrarMenuPrincipal();
+				break;
+			case "4":
+				this.trocarSenha();
 				this.mostrarMenuPrincipal();
 				break;
 		}
