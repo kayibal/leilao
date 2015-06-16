@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import exceptions.BusinessException;
+
 public class UsuarioDAO extends SqlGenericDAO{
 	
 	private static String tableName = "leiloes_usuario";
@@ -42,8 +44,13 @@ public class UsuarioDAO extends SqlGenericDAO{
 		@SuppressWarnings("unchecked")
 		ArrayList<Lance> lances = (ArrayList<Lance>) Lance.manager.fetch(filters);
 		
-		Usuario u;
-		u = new Usuario(nome, endereco, CPF, telefone, username, senha);
+		Usuario u=null;
+		try {
+			u = new Usuario(nome, endereco, CPF, telefone, username, senha);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(rs.getInt("mediador") == 1)
 			u = (Mediador) u;
 		u.setLances(lances);
