@@ -21,7 +21,7 @@ public class UserInterfaceView {
 		this.user_input = new Scanner(System.in);
 		
 		this.uc = new UsuarioControl();
-		this.ac = new AnuncioControl(this.uc);
+		this.ac = new AnuncioControl();
 	}
 
 	public void mostrarMenuPrincipal() {
@@ -30,7 +30,7 @@ public class UserInterfaceView {
 		System.out.println("Select your desired action by typing the according number:");
 		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
-		System.out.println("3. Mostrar Leilões");
+		System.out.println("3. Mostrar Anúncios");
 		
 		selection = user_input.next();
 		switch(selection.trim()){
