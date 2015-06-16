@@ -1,6 +1,6 @@
 package persistence;
-import business.Endereco;
 import business.Lance;
+import business.Mediador;
 import business.Usuario;
 
 import java.sql.ResultSet;
@@ -24,6 +24,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 		fields.put("senha", "TEXT");
 		fields.put("telefone", "INTEGER");
 		fields.put("endereco", 	"TEXT");
+		fields.put("mediador", "INTEGER");
 	}
 	
 	@Override
@@ -37,17 +38,26 @@ public class UsuarioDAO extends SqlGenericDAO{
 		String endereco = rs.getString("endereco");
 		
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters.put("ID",Integer.toString(id));
+		filters.put("usuario",Integer.toString(id));
+		@SuppressWarnings("unchecked")
 		ArrayList<Lance> lances = (ArrayList<Lance>) Lance.manager.fetch(filters);
 		
-		Usuario u = new Usuario(nome, e, CPF, username, senha);
+		Usuario u;
+		u = new Usuario(nome, endereco, CPF, telefone, username, senha);
+		if(rs.getInt("mediador") == 1)
+			u = (Mediador) u;
 		u.setLances(lances);
+		u.setId(id);
 		return u;
 	}
 	
 	@Override
 	public String serialize(ISerializable object) {
 		if(object instanceof Usuario){
+			int mediador = 0;
+			if(object instanceof Mediador){
+				mediador = 1;
+			}
 			Usuario u = (Usuario) object;
 			
 			StringBuilder lanceList = new StringBuilder();
@@ -59,9 +69,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 				delim = ";";
 			}
 			
-			Endereco e = u.getEndereco();
-			if (e.getId() < 0)
-				e.save();
+			String e = u.getEndereco();
 			
 			StringBuilder b = new StringBuilder();
 			b.append(u.getNome()).append(", ");
@@ -70,15 +78,13 @@ public class UsuarioDAO extends SqlGenericDAO{
 			b.append(u.getSenha()).append(", ");
 			b.append(u.getTelefone()).append(", ");
 			b.append(lanceList).append(", ");
-			b.append(e.getId());
-			
+			b.append(e).append(", ");
+			b.append(mediador);
 			return b.toString();
 			
 		} else {
 			throw new IllegalArgumentException("expected Usuario object");
 		}
-		
-		return null;
 	}
 	
 	@Override

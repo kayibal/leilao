@@ -2,7 +2,7 @@ package business;
 
 import java.util.HashMap;
 import java.util.List;
-import exceptions.UserInputException;
+import exceptions.BusinessException;
 import persistence.IGenericDAO;
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class AnuncioControl {
 
 	}
 
-	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws UserInputException {
+	public boolean criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
 	
 		try{
@@ -33,6 +33,7 @@ public class AnuncioControl {
 			a.save();
 		} catch (BusinessException e) {
 			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());
+
 		}
 		
 		
@@ -50,7 +51,7 @@ public class AnuncioControl {
 		try{
 			criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lance);
 			criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lance);
-		} catch (UserInputException e){
+		} catch (BusinessException e){
 			
 		}
 	}
@@ -82,7 +83,7 @@ public class AnuncioControl {
 		else return false;
 	}
 
-	public boolean darLance(int uid, int aid, float lanceValor) throws UserInputException {
+	public boolean darLance(int uid, int aid, float lanceValor) throws BusinessException {
 		
 		if(Anuncio.manager.exists(aid) && 
 				Usuario.manager.exists(uid) &&
@@ -109,7 +110,7 @@ public class AnuncioControl {
 				if( !Anuncio.manager.exists(aid) ) msg += "Anuncio nao foi encontrado";
 				if( !Usuario.manager.exists(uid) ) msg += "Usuario nao foi encontrado";
 			}
-			throw new UserInputException(msg);
+			throw new BusinessException(msg);
 		}
 	}
 

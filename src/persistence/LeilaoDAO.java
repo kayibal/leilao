@@ -3,6 +3,7 @@ package persistence;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,27 +22,27 @@ public class LeilaoDAO extends SqlGenericDAO {
 		fields.put("max_lances", 			"INTEGER");
 		fields.put("max_tempo", 			"INTEGER");
 		fields.put("pontucao", 				"INTEGER");
-		fields.put("lances", 				"TEXT");
 	}
 	
 	@Override
 	protected ISerializable getObject(ResultSet rs) throws SQLException {
+		int id = rs.getInt("ID");
 		int maxParticipantes = rs.getInt("max_participantes");
 		int maxLances = rs.getInt("max_lances");
 		int maxTempo = rs.getInt("max_tempo");
 		int pontuacao = rs.getInt("pontucao");
-		String lancesString = rs.getString("lances");
-		String[] lancesList = lancesString.split(";");
-		LanceDAO lancesManager = new LanceDAO();
 		
 		Leilao leilao = new Leilao(maxParticipantes, maxLances, maxTempo);
 		leilao.setPontuacao(pontuacao);
+		leilao.setId(id);
 		
-		for (String lance: lancesList){
-			int id = Integer.parseInt(lance);
-			Lance mLance = (Lance) lancesManager.get(id);
-			leilao.addLance(mLance);
-		}
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters.put("leilao",Integer.toString(id));
+		@SuppressWarnings("unchecked")
+		ArrayList<Lance> lances = (ArrayList<Lance>) Lance.manager.fetch(filters);
+		
+		leilao.setLances(lances);
+		
 		return leilao;
 	}
 
@@ -55,18 +56,8 @@ public class LeilaoDAO extends SqlGenericDAO {
 			b.append(l.getMaxTempo()).append(", ");
 			b.append(l.getPontuacao()).append(", ");
 			
-			//refactoring
-			ArrayList<Lance> lances = (ArrayList<Lance>) l.getLances();
-			StringBuilder b2 = new StringBuilder();
-			String delim = "";
-			for (Lance lance:lances){
-				if(lance.getId() < 0){
-					lance.save();
-				}
-				b2.append(delim).append(lance.getId());
-				delim = ";";
-			}
-			b.append(b2.toString());
+
+			
 			return b.toString();
 		} else {
 			throw new IllegalArgumentException("expected Leilao object");

@@ -2,7 +2,6 @@ package business;
 
 import persistence.ISerializable;
 import persistence.LanceDAO;
-import persistence.LeilaoDAO;
 
 public class Lance implements ISerializable{
 	
@@ -14,6 +13,12 @@ public class Lance implements ISerializable{
 	Leilao leilao;
 	Usuario usuario;
 	
+	public Lance(Float valor, Leilao l, Usuario u){
+		this.valor = valor;
+		this.leilao = l;
+		this.usuario = u;
+		this.id = -1;
+	}
 	
 	public Float getValor() {
 		return valor;
@@ -37,10 +42,6 @@ public class Lance implements ISerializable{
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public Lance(Float valor){
-		this.valor = valor;
 	}
 	
 	public int getId() {

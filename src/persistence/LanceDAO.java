@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import business.Lance;
+import business.Leilao;
+import business.Usuario;
 
 public class LanceDAO extends SqlGenericDAO{
 	
@@ -14,12 +16,31 @@ public class LanceDAO extends SqlGenericDAO{
 	
 	public LanceDAO(){
 		fields = new LinkedHashMap<String,String>();
-		fields.put("valor",	"REAL");
+		fields.put("valor",	"REAL NOT NULL");
+		fields.put("usuario", "INTEGER NOT NULL");
+		fields.put("leilao", "INTEGER NOT NULL");
 	}
 	
 	@Override
 	public String serialize(ISerializable object) {
-		return "valor";
+		if(object instanceof Lance){
+			Lance l = (Lance) object;
+			StringBuilder b = new StringBuilder();
+			
+			if (l.getLeilao().getId() < 0)
+				l.getLeilao().save();
+			if (l.getUsuario().getId() < 0)
+				l.getUsuario().save();
+			
+			b.append(l.getValor()).append(", ");
+			b.append(l.getUsuario().getId()).append(", ");
+			b.append(l.getLeilao().getId());
+			
+			return b.toString();
+		} else {
+			throw new IllegalArgumentException("expected Lance object");
+		}	
+		
 	}
 
 	@Override
@@ -29,8 +50,13 @@ public class LanceDAO extends SqlGenericDAO{
 
 	@Override
 	protected ISerializable getObject(ResultSet rs) throws SQLException {
+		int id = rs.getInt("ID");
 		Float valor = rs.getFloat("valor");
-		return new Lance(valor);
+		int leilaoId = rs.getInt("leilao");
+		int usuarioId = rs.getInt("usuario");
+		Lance l = new Lance(valor, ((Leilao) Leilao.manager.get(leilaoId)), (Usuario) (Usuario.manager.get(usuarioId)));
+		l.setId(id);
+		return l;
 	}
 	
 	@Override

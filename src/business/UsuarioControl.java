@@ -2,7 +2,7 @@ package business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import exceptions.UserInputException;
+import exceptions.BusinessException;
 import persistence.IGenericDAO;
 
 public class UsuarioControl {
@@ -25,10 +25,9 @@ public class UsuarioControl {
 		
 		if(userlist!=null){
 			if(userlist.size()>1) return false;
-			
-			String msg = "Username ja cadastrado no sistema\n";
-
-			throw new BusinessException(msg);
+			return true;
+		} else {
+			throw new BusinessException("Usuario nao foi cadastrado:\n" + msg);
 		}
 		
 		Usuario u = new Usuario(nome, endereco, CPF, telefone, username, senha);

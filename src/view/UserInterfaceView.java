@@ -6,7 +6,7 @@ import business.Anuncio;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import exceptions.UserInputException;
+import exceptions.BusinessException;
 
 
 public class UserInterfaceView {
@@ -83,7 +83,7 @@ public class UserInterfaceView {
 			ac.criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lanceMin);
 			System.out.println("O Anuncio foi criado com sucesso!");
 			this.mostrarMenuPrincipal();
-		}catch(UserInputException e){
+		}catch(BusinessException e){
 			System.out.println(e.getMessage());
 		}
 		
@@ -124,7 +124,7 @@ public class UserInterfaceView {
 		  ac.darLance(uid, aid, lanceValor);
 		  System.out.println("O Lance foi realizado com sucesso!");
 		  this.mostrarMenuPrincipal();
-		}catch(UserInputException e){
+		}catch(BusinessException e){
 		  System.out.println(e.getMessage());
 		}
 

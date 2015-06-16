@@ -35,6 +35,7 @@ public class Usuario implements ISerializable{
 		this.setUsername(username);
 		this.setSenha(senha);
 		this.lances = new ArrayList<>();
+		this.id = -1;
 	}
 	
 	public int getId() {
@@ -129,6 +130,7 @@ public class Usuario implements ISerializable{
 		return endereco;
 	}
 
+<<<<<<< HEAD
 	public void setEndereco(String endereco) throws BusinessException{
 		if(!endereco.matches("[\\w,\\/,_,-]{5,40}")){
 			this.endereco = endereco;
@@ -136,6 +138,10 @@ public class Usuario implements ISerializable{
 		else{
 			throw new BusinessException("Endereco Invalido\n");
 		}
+=======
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+>>>>>>> 9b05926688d86e7b4b133932817579c6c76d83eb
 	}
 	
 	public void save(){
