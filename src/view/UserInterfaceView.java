@@ -169,8 +169,8 @@ public class UserInterfaceView {
 		password=user_input.next();
 		try{
 			uc.fazerLogin(user,password);
-		}catch(BusinessException ex){
-			System.out.println("Usuário ou senha incorretos.");
+		}catch(BusinessException e){
+			System.out.println(e.getMessage());
 		}
 	}
 
