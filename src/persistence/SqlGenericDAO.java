@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,6 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	
 	protected SqlGenericDAO(){
 		this.manager = SqlLiteManager.getInstance();
-		initial();
 	}
 	
 	@Override
@@ -28,14 +28,12 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 		} else {
 			throw new IllegalArgumentException("Expected an instance of SqlLiteManager");
 		}
-		
 	}
 
 	@Override
 	public int save(ISerializable Obj) {
-		Connection c = manager.getConnectionObject();
 		String query;
-		if(Obj.getId() > 0){
+		if(Obj.getId() < 0){
 			query = "INSERT INTO " + getTableName() + " (" + getFields() + ") VALUES (" + serialize(Obj) + ");";
 		} else {
 			String[] fields = getFields().split(",");
@@ -54,17 +52,25 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 					}
 				}
 			} else {
-				throw new RuntimeException("Field and Value size don't match");
+				throw new RuntimeException("Field and Value size don't match\n" + Arrays.toString(fields) + "\n" + Arrays.toString(values));
 			}
-			query = "UPDATE " + getTableName() + " SET " + b.toString() + "WHERE ID = " + Obj.getId();
+			query = "UPDATE " + getTableName() + " SET " + b.toString() + " WHERE ID = " + Obj.getId();
 		}
-		try{
+		try(
+			Connection c = manager.getConnectionObject();
 			Statement stmt = c.createStatement();
-			int affectedRows = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			Statement stmt2 = c.createStatement();
+			){
+			System.out.println(query);
+			int affectedRows = stmt.executeUpdate(query);
+			System.out.println(affectedRows);
 			if(affectedRows > 0){
-				ResultSet affectedKeys = stmt.getGeneratedKeys();
+				ResultSet affectedKeys = stmt2.executeQuery("SELECT last_insert_rowid()");
 				if(affectedKeys.next()){
+					//Maybe change id to long
 					Obj.setId(affectedKeys.getInt(1));
+					System.out.println(Obj.getId());
+					affectedKeys.close();
 					return Obj.getId();
 				} else {
 					throw new SQLException("No updated or inserted id obtained");
@@ -81,11 +87,13 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	public ISerializable get(int id) {
 		Connection c = manager.getConnectionObject();
 		String query = "SELECT * FROM " + getTableName() + " WHERE ID = " + Integer.toString(id);
-		try{
+		try(
 			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			if(rs.next()){			
-				return getObject(rs);
+			ResultSet rs = stmt.executeQuery(query)
+			){
+			if(rs.next()){	
+				ISerializable result = getObject(rs);
+				return result;
 			} else {
 				return null;
 				//throw new SQLException("there were no records found with this id");
@@ -96,11 +104,12 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	}
 	
 	public List<? extends ISerializable> all(){
-		Connection c = manager.getConnectionObject();
 		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
-		try{
+		try(
+			Connection c = manager.getConnectionObject();
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM " + getTableName() + ";");
+			){
 			while(rs.next()){
 				result.add(getObject(rs));
 			}
@@ -111,8 +120,7 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	}
 
 	@Override
-	public List<? extends ISerializable> fetch(Map<String, String> filters) {
-		Connection c = manager.getConnectionObject();
+	public List<ISerializable> fetch(Map<String, String> filters) {
 		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
 		StringBuilder b = new StringBuilder();
 		String delim = "";
@@ -127,9 +135,28 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			}
 			delim = " AND ";
 		}
-		try{
+		try(
+			Connection c = manager.getConnectionObject();
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM " + getTableName() + " WHERE " + b.toString() + ";");
+		){
+			while(rs.next()){
+				result.add(getObject(rs));
+			}
+			return result;
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<ISerializable> fetch(String filters) {
+		
+		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
+		try(
+			Connection c = manager.getConnectionObject();
+			Statement stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM " + getTableName() + " WHERE " + filters + ";");
+		){
 			while(rs.next()){
 				result.add(getObject(rs));
 			}
@@ -148,13 +175,14 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 
 	@Override
 	public void initial() {
-		Connection c = manager.getConnectionObject();
-		try {
+		try (
+			Connection c = manager.getConnectionObject();
 			Statement stmt = c.createStatement();
-			String query = "CREATE TABLE IF NOT EXISTS " + getTableName() + "(ID INT PRIMARY KEY AUTOINCREMENT NOT NULL," + getFieldsWithTypes() + ");";
+			){
+			String query = "CREATE TABLE IF NOT EXISTS " + getTableName() + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," + getFieldsWithTypes() + ");";
 			stmt.executeUpdate(query);
-			stmt.close();
-			c.close();
+			//stmt.close();
+			//c.close();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

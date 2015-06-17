@@ -25,6 +25,7 @@ public class AnuncioDAO extends SqlGenericDAO{
 		fields.put("marca", 	"TEXT NOT NULL");
 		fields.put("potencia", 	"INTEGER NOT NULL");
 		fields.put("lance_min", "REAL NOT NULL");
+		fields.put("fechado", 	"INTEGER NOT NULL");
 		fields.put("leilao", 	"INTEGER UNIQUE");	//can be null
 	}
 	
@@ -39,19 +40,14 @@ public class AnuncioDAO extends SqlGenericDAO{
 		String marca = rs.getString("marca");
 		int potencia = rs.getInt("potencia");
 		Float lanceMin = rs.getFloat("lance_min");
+		boolean fechado = (1 == rs.getInt("fechado"));
 		int leilaoId = rs.getInt("leilao");
 		
 		Leilao leilao = null;
 		if(!rs.wasNull())
 			leilao = (Leilao) Leilao.manager.get(leilaoId);
-		
-		Anuncio result = null;
-		try {
-			result = new Anuncio(modelo, ano, motor, placa, cor, marca, potencia, lanceMin);
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Anuncio result = new Anuncio();
+		result.setAttributes(id, modelo, ano, motor, placa, cor, marca, potencia, lanceMin, leilao, fechado);
 		result.setLeilao(leilao);
 		result.setId(id);
 		return  result;
@@ -62,19 +58,23 @@ public class AnuncioDAO extends SqlGenericDAO{
 		if(object instanceof Anuncio){
 			Anuncio a = (Anuncio) object;
 			StringBuilder b = new StringBuilder();
-			b.append(a.getModelo()).append(", ");
+			int fechado = (a.getFechado()) ? 1 : 0;
+			b.append("'").append(a.getModelo()).append("'").append(", ");
 			b.append(a.getAno()).append(", ");
-			b.append(a.getMotor()).append(", ");
-			b.append(a.getPlaca()).append(", ");
-			b.append(a.getCor()).append(", ");
-			b.append(a.getMarca()).append(", ");
+			b.append("'").append(a.getMotor()).append("'").append(", ");
+			b.append("'").append(a.getPlaca()).append("'").append(", ");
+			b.append("'").append(a.getCor()).append("'").append(", ");
+			b.append("'").append(a.getMarca()).append("'").append(", ");
 			b.append(a.getPotencia()).append(", ");
-			b.append(a.getLanceMin()).append(", ");
-			if (a.getLeilao().getId() > 0){
+			b.append(fechado).append(", ");
+			b.append("'").append(a.getLanceMin()).append("'").append(", ");
+			if (a.getLeilao() != null && a.getLeilao().getId() > 0){
 				b.append(a.getLeilao().getId());
-			} else {
+			} else if(a.getLeilao() != null) {
 				a.getLeilao().save();
 				b.append(a.getLeilao().getId());
+			} else {
+				b.append("NULL");
 			}
 			return b.toString();
 		} else {

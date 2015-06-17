@@ -7,12 +7,16 @@ import exceptions.BusinessException;
 public class UsuarioControl {
 
 	private int loggedInUser;
+	
+	public UsuarioControl(){
+		
+	}
 
 	public void cadastrarUsuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException {
 		
 		HashMap<String,String> filters = new HashMap<String,String>();
 		filters.put("username", username);
-		ArrayList<Usuario> userlist = (ArrayList<Usuario>) Usuario.manager.fetch(filters);
+		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		if(userlist!=null){
 			throw new BusinessException("Usuario não foi cadastrado: username já em uso\n");
@@ -30,11 +34,9 @@ public class UsuarioControl {
 	}
 
 	public void trocarSenha(int uid, String senhaNova) throws BusinessException {
-		
 		Usuario user = (Usuario) Usuario.manager.get(uid);
 		user.setSenha(senhaNova);
 		user.save();
-			
 	}
 
 	public void fazerLogin(String username, String senha) throws BusinessException {
@@ -43,7 +45,7 @@ public class UsuarioControl {
 		filters.put("username", username);
 		filters.put("senha", senha);
 		
-		ArrayList<Usuario> userlist = (ArrayList<Usuario>) Usuario.manager.fetch(filters);
+		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		
 		if(userlist!=null){
@@ -65,12 +67,27 @@ public class UsuarioControl {
 		return (Usuario) Usuario.manager.get(id);
 	}
 	
+	public void darPontucao(int aid, int p) throws BusinessException {
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		Leilao l = a.getLeilao();
+		if(l.getVencedorID() > -1){
+			l.setPontuacao(p);
+			l.save();
+		} else {
+			throw new BusinessException("Voce nao pode dar pontuacao nesse leilao");
+		}
+	}
+	
 	public int getLoggedUserID(){
 		return this.loggedInUser;
 	}
 	
 	private void setLoggedUserID(int id){
 		this.loggedInUser = id;
+	}
+	
+	public boolean mediadorLogado(){
+		return Usuario.manager.get(loggedInUser) instanceof Mediador;
 	}
 
 }

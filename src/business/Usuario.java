@@ -1,6 +1,7 @@
 package business;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,10 +26,7 @@ public class Usuario implements ISerializable{
 
 	private int telefone;
 
-	private List<Lance> lances;
-
 	private String endereco;
-	
 	public Usuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException{
 		this.setNome(nome);
 		this.setEndereco(endereco);
@@ -36,10 +34,33 @@ public class Usuario implements ISerializable{
 		this.setTelefone(telefone);
 		this.setUsername(username);
 		this.setSenha(senha);
-		this.lances = new ArrayList<>();
 		this.id = -1;
 	}
 	
+	public Usuario(){}
+	
+	/**
+	 * This pseudo constructor is used only by persistence to invoke an object from the database
+	 * @param id
+	 * @param nome
+	 * @param cPF
+	 * @param username
+	 * @param senha
+	 * @param telefone
+	 * @param lances
+	 * @param endereco
+	 */
+	public void setAttributes(int id, String nome, Integer cPF, String username,
+			String senha, int telefone, String endereco) {
+		this.id = id;
+		this.nome = nome;
+		CPF = cPF;
+		this.username = username;
+		this.senha = senha;
+		this.telefone = telefone;
+		this.endereco = endereco;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -53,7 +74,7 @@ public class Usuario implements ISerializable{
 	}
 
 	public void setNome(String nome) throws BusinessException{
-		if(!nome.matches("[\\w,\\/,_,-]{6,30}")){
+		if(nome.matches("[\\w,\\/,_,-, ]{6,30}")){
 			this.nome = nome;
 		}
 		else{
@@ -74,7 +95,7 @@ public class Usuario implements ISerializable{
 	}
 
 	public void setUsername(String username) throws BusinessException{
-		if(!username.matches("[\\w,\\d,]{5,20}")){
+		if(username.matches("[\\w,\\d,]{5,20}")){
 			this.username = username;
 		}
 		else{
@@ -87,7 +108,7 @@ public class Usuario implements ISerializable{
 	}
 
 	public void setSenha(String senha) throws BusinessException {
-		if(!senha.matches("[\\w,\\d]{4,20}")){
+		if(senha.matches("[\\w,\\d]{4,20}")){
 			this.senha = senha;
 		} else {
 			throw new BusinessException("Senha Invalida\n");
@@ -104,12 +125,15 @@ public class Usuario implements ISerializable{
 	}
 
 	public List<Lance> getAllLances() {
-		return lances;
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters.put("usuario",Integer.toString(id));
+		//@SuppressWarnings("unchecked")
+		return (ArrayList<Lance>) (ArrayList<?>) Lance.manager.fetch(filters);
 	}
 	
 	public int getNumLancesFromLeilao(Leilao leilao){
 		int numLances=0;
-		Iterator<Lance> itrUsuario=lances.iterator();		
+		Iterator<Lance> itrUsuario=getAllLances().iterator();		
 		while(itrUsuario.hasNext()){
 			Lance lanceAtual=itrUsuario.next();
 			Iterator<Lance> itrLeilao=leilao.getLances().iterator();
@@ -119,26 +143,33 @@ public class Usuario implements ISerializable{
 		}
 		return(numLances);
 	}
-	
-	public void addLance(Lance lance){
-		this.lances.add(lance);
-	}
-	
-	public void setLances(ArrayList<Lance> lances){
-		this.lances = lances;
-	}
 
 	public String getEndereco() {
 		return endereco;
 	}
 
 	public void setEndereco(String endereco) throws BusinessException{
-		if(!endereco.matches("[\\w,\\/,_,-]{5,40}")){
+		if(endereco.matches("[\\w,\\/,_,-]{5,40}")){
 			this.endereco = endereco;
 		}
 		else{
 			throw new BusinessException("Endereco Invalido\n");
 		}
+	}
+	
+	/**
+	 * Anuncio tem que ter Leilao
+	 * @param uid
+	 * @param aid
+	 * @return
+	 */
+	public boolean limiteDeLancesAtingido(int aid){
+		Usuario u = this;
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		
+		if(u.getNumLancesFromLeilao(a.getLeilao()) >=  a.getLeilao().getMaxLances()) return true;
+		else return false;
+
 	}
 	
 	public void save(){
@@ -149,7 +180,7 @@ public class Usuario implements ISerializable{
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", CPF=" + CPF
 				+ ", username=" + username + ", senha=" + senha + ", telefone="
-				+ telefone + ", lances=" + lances + ", endereco=" + endereco
+				+ telefone + ", endereco=" + endereco
 				+ "]";
 	}
 	

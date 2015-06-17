@@ -23,18 +23,19 @@ public class SqlLiteManager implements IDatabaseManager {
 
 	@Override
 	public Connection getConnectionObject() {
-		if (this.connection == null){
-			Connection c = null;
-			try{
+		try{
+			if (this.connection == null || this.connection.isClosed()){
+				Connection c = null;
 				Class.forName(JDBC_DRIVER);
 				c = DriverManager.getConnection("jdbc:sqlite:" + config.getDatabaseName());
-			} catch (Exception e){
-				System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-			    System.exit(0);
+				return c;
+			} else {
+				return connection; 
 			}
-			return c;
-		} else {
-			return connection; 
+		}catch (SQLException e){
+			throw new RuntimeException(e);
+		}catch(ClassNotFoundException e){
+			throw new RuntimeException(e);
 		}
 	}
 	

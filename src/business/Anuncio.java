@@ -1,6 +1,6 @@
 package business;
 
-import java.util.List;
+import exceptions.BusinessException;
 
 import persistence.AnuncioDAO;
 import persistence.ISerializable;
@@ -33,8 +33,6 @@ public class Anuncio implements ISerializable {
 	
 	private Boolean fechado;
 
-	private List<Pergunta> perguntas;
-
 	public Anuncio(String modelo, Integer ano, String motor, String placa,
 			String cor, String marca, int potencia, Float lanceMin) throws BusinessException{
 		this.setModelo(modelo);
@@ -46,10 +44,43 @@ public class Anuncio implements ISerializable {
 		this.setPotencia(potencia);
 		this.setLanceMin(lanceMin);
 		this.leilao = null;
-		this.perguntas = null;
 		this.id = -1;
+		this.fechado = false;
 	}
 	
+	
+	public Anuncio(){}
+	
+	/**
+	 * Pseudo constructor used by persistence layer
+	 * @param id
+	 * @param modelo
+	 * @param ano
+	 * @param motor
+	 * @param placa
+	 * @param cor
+	 * @param marca
+	 * @param potencia
+	 * @param lanceMin
+	 * @param leilao
+	 * @param fechado
+	 */
+	public void setAttributes(int id, String modelo, int ano, String motor, String placa,
+		String cor, String marca, int potencia, Float lanceMin, Leilao leilao,
+		Boolean fechado) {
+	this.id = id;
+	this.modelo = modelo;
+	this.ano = ano;
+	this.motor = motor;
+	this.placa = placa;
+	this.cor = cor;
+	this.marca = marca;
+	this.potencia = potencia;
+	this.lanceMin = lanceMin;
+	this.leilao = leilao;
+	this.fechado = fechado;
+	}
+
 	public Boolean getFechado() {
 		return fechado;
 	}
@@ -177,17 +208,16 @@ public class Anuncio implements ISerializable {
 	public void setLeilao(Leilao leilao) {
 		this.leilao = leilao;
 	}
-
-	public List<Pergunta> getPerguntas() {
-		return perguntas;
-	}
-
-	public void setPerguntas(List<Pergunta> perguntas) {
-		this.perguntas = perguntas;
-	}
 	
 	public void save(){
 		manager.save(this);
+	}
+	
+	public boolean valorMinimoObservado(Float lanceValor){
+		Anuncio a = this;
+		
+		if(lanceValor >= a.getLanceMin()) return true;
+		else return false;
 	}
 	
 	public String toString(){

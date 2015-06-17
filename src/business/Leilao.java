@@ -1,7 +1,8 @@
 package business;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import persistence.ISerializable;
@@ -29,8 +30,6 @@ public class Leilao implements ISerializable{
 	private int vencedorID;
 
 	private int pontuacao;
-
-	private List<Lance> lances;
 	
 	public Leilao(int maxParticipantes, int maxLances, int maxTempo, Date dataInicio){
 		this.maxParticipantes = maxParticipantes;
@@ -39,7 +38,6 @@ public class Leilao implements ISerializable{
 		this.id = -1;
 		this.setDataInicio(dataInicio);
 		//this.pontuacao = 0;//?
-		this.lances = new ArrayList<>();
 		this.setVencedorID(-1);
 	}
 	
@@ -86,17 +84,12 @@ public class Leilao implements ISerializable{
 	public void setPontuacao(int pontuacao) {
 		this.pontuacao = pontuacao;
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<Lance> getLances() {
-		return lances;
-	}
-
-	public void setLances(List<Lance> lances) {
-		this.lances = lances;
-	}
-
-	public void addLance(Lance lance){
-		this.lances.add(lance);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters.put("leilao",Integer.toString(id));
+		return (ArrayList<Lance>)(ArrayList<?>) Lance.manager.fetch(filters);
 	}
 	
 	public void save(){
