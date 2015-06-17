@@ -78,7 +78,7 @@ public class UserInterfaceView {
 					this.mostrarAnuncios();
 					break;
 				case "2":
-					this.darLance();
+					this.registrarUsuario();
 					break;
 				case "3":
 					this.fazerLogin();
@@ -179,7 +179,7 @@ public class UserInterfaceView {
 		newpass1=user_input.next();
 		System.out.println("Confirme sua nova senha:");
 		newpass2=user_input.next();
-		if(newpass1==newpass2)
+		if(newpass1.equals(newpass2))
 			try {
 				uc.trocarSenha(uc.getLoggedUserID(), newpass1);
 			} catch (BusinessException e) {
@@ -232,6 +232,37 @@ public class UserInterfaceView {
 		  System.out.println(e.getMessage());
 		}
 
+	}
+	
+	private void registrarUsuario(){
+		String nome, endereco, CPF, telefone, username, senha1, senha2;
+		Boolean keep=true;
+		
+		System.out.println("Insira seu nome completo:");
+		nome=user_input.next();
+		System.out.println("Insira seu endereco:");
+		endereco=user_input.next();
+		System.out.println("Insira seu CPF:");
+		CPF=user_input.next();
+		System.out.println("Insira seu telefone:");
+		telefone=user_input.next();
+		System.out.println("Insira seu username:");
+		username=user_input.next();
+		do{
+			System.out.println("Insira sua senha:");
+			senha1=user_input.next();
+			System.out.println("Confirme sua senha:");
+			senha2=user_input.next();
+			if(senha1.equals(senha2))
+				keep=false;
+			else
+				keep=true;
+		}while(keep);
+		try {
+			uc.cadastrarUsuario(nome, endereco, Integer.getInteger(CPF), Integer.getInteger(telefone), username, senha1);
+		} catch (BusinessException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	
