@@ -25,74 +25,94 @@ public class UserInterfaceView {
 	}
 
 	public void mostrarMenuPrincipal() {		
-		//TODO ver quem esta logado
-		
-		String selection;
-		if(uc.getLoggedUserID() != 0){
-			System.out.println("Select your desired action by typing the according number:");
-			System.out.println("1. Criar Anuncio");
-			System.out.println("2. Realizar Lance");
-			System.out.println("3. Mostrar Anúncios");
-			System.out.println("4. Trocar senha");
-			System.out.println("5. Dar pontuacão");
-			System.out.println("6. Logout");
-
-			selection = user_input.next();
-			switch(selection.trim()){
-			case "1":
-				this.criarAnuncio();
-				break;
-			case "2":
-				this.darLance();
-				break;
-			case "3":
-				//this.mostrarAnuncios();
-				this.mostrarMenuPrincipal();
-				break;
-			case "4":
-				this.trocarSenha();
-				this.mostrarMenuPrincipal();
-				break;
-			default:
-				System.out.println("Opcão inválida!");
-				break;
+		Boolean keep=true;
+		do{
+			String selection;
+			if(uc.getLoggedUserID() != 0){
+				System.out.println("Select your desired action by typing the according number:");
+				System.out.println("1. Criar Anuncio");
+				System.out.println("2. Realizar Lance");
+				System.out.println("3. Mostrar Anúncios");
+				System.out.println("4. Trocar senha");
+				System.out.println("5. Dar pontuacão");
+				System.out.println("6. Logout");
+				System.out.println("7. Sair");
+	
+				selection = user_input.next();
+				switch(selection.trim()){
+				case "1":
+					this.criarAnuncio();
+					break;
+				case "2":
+					this.darLance();
+					break;
+				case "3":
+					this.mostrarAnuncios();
+					break;
+				case "4":
+					this.trocarSenha();
+					break;
+				case "5":
+					this.darPontucao(null);
+					break;
+				case "6":
+					uc.fazerLogout();
+					break;
+				case "7":
+					keep=false;
+					break;
+				default:
+					System.out.println("Opcão inválida!");
+					break;
+				}
+			}else if(uc.getLoggedUserID() == 0){
+				System.out.println("Selecione a acao desejada:");
+				System.out.println("1. Mostrar Anúncios");
+				System.out.println("2. Realizar cadastro");
+				System.out.println("3. Fazer login");
+				System.out.println("4. Sair");
+	
+				selection = user_input.next();
+				switch(selection.trim()){
+				case "1":
+					this.mostrarAnuncios();
+					break;
+				case "2":
+					this.darLance();
+					break;
+				case "3":
+					this.fazerLogin();
+					break;
+				case "4":
+					keep=false;
+					break;
+				default:
+					System.out.println("Opcão inválida!");
+					break;
+				}
+			}else if(uc.mediadorLogado()){
+				System.out.println("Selecione a acao desejada:");
+				System.out.println("1. Aprovar anuncios");
+				System.out.println("2. Logout");
+				System.out.println("3. Sair");
+	
+				selection = user_input.next();
+				switch(selection.trim()){
+				case "1":
+					this.criarAnuncio();
+					break;
+				case "2":
+					uc.fazerLogout();
+					break;
+				case "4":
+					keep=false;
+					break;
+				default:
+					System.out.println("Opcão inválida!");
+					break;
+				}
 			}
-		}else if(uc.getLoggedUserID() == 0){
-			System.out.println("Selecione a acao desejada:");
-			System.out.println("1. Mostrar Anúncios");
-			System.out.println("2. Realizar cadastro");
-			System.out.println("3. Fazer login");
-
-			selection = user_input.next();
-			switch(selection.trim()){
-			case "1":
-				this.mostrarAnuncios();
-				break;
-			case "2":
-				this.darLance();
-				break;
-			case "3":
-				
-				break;
-			default:
-				System.out.println("Opcão inválida!");
-				break;
-			}
-		}else if(uc.mediadorLogado()){
-			System.out.println("Selecione a acao desejada:");
-			System.out.println("1. Aprovar anuncios");
-			System.out.println("2. Logout");
-
-			selection = user_input.next();
-			switch(selection.trim()){
-			case "1":
-				this.criarAnuncio();
-				break;
-			default:
-				System.out.println("Opcão inválida!");
-				break;
-			}
-		}
+		}while(keep);
 	}
 
 
@@ -249,7 +269,6 @@ public class UserInterfaceView {
 	private void darPontucao(Integer lid) {
 		Integer pont;
 		Boolean error=false;
-		//Anuncio anuncio=ac.getAnuncio(lid);
 		do{
 			System.out.println("Insira a pontuacão:");
 			pont=Integer.valueOf(user_input.next());

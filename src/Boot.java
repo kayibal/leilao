@@ -10,7 +10,6 @@ public class Boot {
 		install();
 		UserInterfaceView UI = new UserInterfaceView();
 		UI.mostrarMenuPrincipal();
-		UI.fazerLogin();
 	}
 	
 	public static void DAOtest(){
