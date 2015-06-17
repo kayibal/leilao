@@ -27,7 +27,7 @@ public interface IGenericDAO<T> {
 	 * @param filters a map of strings
 	 * @return
 	 */
-	List<? extends ISerializable> fetch(Map<String,String> filters);
+	List<ISerializable> fetch(Map<String,String> filters);
 	
 	/**
 	 * This method is run on start of the application and is used to create or update changed tables

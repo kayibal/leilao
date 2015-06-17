@@ -19,10 +19,11 @@ public class UserInterfaceView {
 		this.user_input = new Scanner(System.in);
 		
 		this.uc = new UsuarioControl();
-		this.ac = new AnuncioControl(this.uc);
+		this.ac = new AnuncioControl();
 	}
 
 	public void mostrarMenuPrincipal() {
+		//TODO ver quem esta logado
 		
 		String selection;
 		System.out.println("Select your desired action by typing the according number:");
@@ -39,7 +40,7 @@ public class UserInterfaceView {
 				this.darLance();
 				break;
 			case "3":
-				this.mostrarAnuncios();
+				//this.mostrarAnuncios();
 				this.mostrarMenuPrincipal();
 				break;
 		}
@@ -121,18 +122,11 @@ public class UserInterfaceView {
 
 	}
 
-	private void mostrarLeiloes() {
-
-	}
-
-	private void mostrarLeilao() {
-
-	}
 
 	private void darLance() {
-		
+		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();
-		this.mostrarAnuncios();
+		this.mostrarLeiloesAtivas();
 		String anuncioAlvo;
 		System.out.println("Digite o leilão para o qual deseja realizar um lance");
 		anuncioAlvo = user_input.next();
@@ -153,44 +147,25 @@ public class UserInterfaceView {
 		}
 
 	}
-
-	private void mostrarAnuncios() {
-		
-		ArrayList<Anuncio> all = this.ac.getAnuncios();
-
-		for(int i = 0; i < all.size(); i++){
-			System.out.println("--------- " + i + " -----------\n");
-			
-			System.out.println(all.get(i).toString());
-			
-			System.out.println("-----------------------\n");
-		}
-		
-
+	
+	private void mostrarAnunciosPendentes(){
+		//TODO
+	}
+	
+	private void mostrarLeiloesAtivas(){
+		//TODO
 	}
 
 	private void aprovarAnuncios() {
-
+		//TODO
 	}
 
 	private void fecharAnuncio() {
-
-	}
-
-	private void mostrarPerguntas() {
-
-	}
-
-	private void fazerPergunta() {
-
-	}
-
-	private void darResposta() {
-
+		//TODO
 	}
 
 	private void darPontucao() {
-
+		//TODO
 	}
 
 }

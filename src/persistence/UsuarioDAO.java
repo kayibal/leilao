@@ -25,6 +25,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 		fields.put("telefone", "INTEGER");
 		fields.put("endereco", 	"TEXT");
 		fields.put("mediador", "INTEGER");
+		System.out.println("UsuarioDAO constructed");
 	}
 	
 	@Override
@@ -37,13 +38,8 @@ public class UsuarioDAO extends SqlGenericDAO{
 		int telefone = rs.getInt("telefone");
 		String endereco = rs.getString("endereco");
 		
-		HashMap<String,String> filters = new HashMap<String,String>();
-		filters.put("usuario",Integer.toString(id));
-		@SuppressWarnings("unchecked")
-		ArrayList<Lance> lances = (ArrayList<Lance>) Lance.manager.fetch(filters);
-		
 		Usuario u = new Usuario();
-		u.setAttributes(id, nome, CPF, username, senha, telefone, lances, endereco);
+		u.setAttributes(id, nome, CPF, username, senha, telefone, endereco);
 		if(rs.getInt("mediador") == 1)
 			u = (Mediador) u;
 
@@ -59,25 +55,15 @@ public class UsuarioDAO extends SqlGenericDAO{
 			}
 			Usuario u = (Usuario) object;
 			
-			StringBuilder lanceList = new StringBuilder();
-			String delim ="";
-			for(Lance l :u.getAllLances()){
-				if (l.getId() < 0)
-					l.save();
-				lanceList.append(delim).append(l.getId());
-				delim = ";";
-			}
-			
 			String e = u.getEndereco();
 			
 			StringBuilder b = new StringBuilder();
-			b.append(u.getNome()).append(", ");
+			b.append("'").append(u.getNome()).append("'").append(", ");
 			b.append(u.getCPF()).append(", ");
-			b.append(u.getUsername()).append(", ");
-			b.append(u.getSenha()).append(", ");
+			b.append("'").append(u.getUsername()).append("'").append(", ");
+			b.append("'").append(u.getSenha()).append("'").append(", ");
 			b.append(u.getTelefone()).append(", ");
-			b.append(lanceList).append(", ");
-			b.append(e).append(", ");
+			b.append("'").append(e).append("'").append(", ");
 			b.append(mediador);
 			return b.toString();
 			

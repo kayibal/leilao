@@ -3,35 +3,33 @@ package business;
 import java.util.ArrayList;
 import java.util.HashMap;
 import exceptions.BusinessException;
-import persistence.IGenericDAO;
 
 public class UsuarioControl {
 
 	private int loggedInUser;
-	//private IGenericDAO<Usuario> usuarioDAO;
 	
-	/*public UsuarioControl(){
-		usuarioDAO = new IGenericDAO<Usuario>();
-		Usuario standard = new Usuario("Fulano", null, 0, "fulano", "password");
-		usuarioDAO.save(standard);
-		loggedInUser = usuarioDAO.getID(standard);
-	}*/
+	public UsuarioControl(){
+		
+	}
 
-	public boolean cadastrarUsuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException {
+	public void cadastrarUsuario(String nome, String endereco, Integer CPF, int telefone, String username, String senha) throws BusinessException {
 		
 		HashMap<String,String> filters = new HashMap<String,String>();
 		filters.put("username", username);
-		ArrayList<Usuario> userlist = (ArrayList<Usuario>) Usuario.manager.fetch(filters);
+		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		if(userlist!=null){
-			if(userlist.size()>1) return false;
-			return true;
-		} else {
-			throw new BusinessException("Usuario nao foi cadastrado:\n" + msg);
+			throw new BusinessException("Usuario não foi cadastrado: username já em uso\n");
 		}
 		
-		Usuario u = new Usuario(nome, endereco, CPF, telefone, username, senha);
-		u.save();
+		try{
+			Usuario u = new Usuario(nome, endereco, CPF, telefone, username, senha);
+			u.save();
+		} catch (BusinessException e) {
+			throw new BusinessException("Usuario nao foi cadastrado:\n" + e.getMessage());
+		}
+		
+		
 		
 	}
 
@@ -41,22 +39,18 @@ public class UsuarioControl {
 		user.save();
 	}
 
-	public boolean fazerLogin(String username, String senha) throws BusinessException {
+	public void fazerLogin(String username, String senha) throws BusinessException {
 		
 		HashMap<String,String> filters = new HashMap<String,String>();
 		filters.put("username", username);
 		filters.put("senha", senha);
 		
-		ArrayList<Usuario> userlist = (ArrayList<Usuario>) Usuario.manager.fetch(filters);
+		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		
 		if(userlist!=null){
-			if(userlist.size()>1) return false;
-		
 			int id = userlist.get(0).getId();
 			setLoggedUserID(id);
-			
-			return true;
 		}
 		else{
 			//build Exception
@@ -90,6 +84,10 @@ public class UsuarioControl {
 	
 	private void setLoggedUserID(int id){
 		this.loggedInUser = id;
+	}
+	
+	public boolean mediadorLogado(){
+		return Usuario.manager.get(loggedInUser) instanceof Mediador;
 	}
 
 }

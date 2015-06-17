@@ -1,39 +1,30 @@
 package business;
 
-import java.util.HashMap;
-import java.util.List;
+import java.sql.Date;
 import exceptions.BusinessException;
-import persistence.IGenericDAO;
 import java.util.ArrayList;
 
 public class AnuncioControl {
-
-	//private UsuarioControl usuarioControl;
-	//private IGenericDAO<Anuncio> anuncioDAO;
-	//private IGenericDAO<Leilao> leilaoDAO;
-	//private IGenericDAO<Lance> lanceDAO;
 	
-	//public AnuncioControl(UsuarioControl uc){
-		//this.usuarioControl = uc;
-		//this.anuncioDAO = new IGenericDAO<Anuncio>();
-		//this.leilaoDAO = new IGenericDAO<Leilao>();
-		//this.lanceDAO = new IGenericDAO<Lance>();
-		//this.createSampleData();
-	//}
+	public AnuncioControl(){
+		
+	}
 
-	public void aprovarAnuncio(int aid) {
-
+	public void aprovarAnuncio(int aid, int maxPart, int maxLances, int tempoLimite, Date dataHoraInicio) {
+		
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		Leilao l = new Leilao(maxPart, maxLances, tempoLimite, dataHoraInicio);
+		a.setLeilao(l);
+		a.save();
 	}
 
 	public void criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
-	
 		try{
 			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, cor, placa,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
 			a.save();
 		} catch (BusinessException e) {
 			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());
-
 		}
 		
 		
@@ -56,8 +47,21 @@ public class AnuncioControl {
 		}
 	}
 
+
 	public boolean fecharAnuncio(int aid) {
-		//TODO
+		
+		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
+		
+		if(a.getLeilao()==null) return false;
+		
+		if(!a.getLeilao().getLances().isEmpty()){
+			Lance max = null;
+			for(Lance l: a.getLeilao().getLances()){
+				if(max==null || l.getValor()>max.getValor()) max = l;
+			}
+			a.getLeilao().setVencedorID(max.getId());
+		}
+		a.setFechado(true);
 		return false;
 	}
 	
@@ -66,7 +70,6 @@ public class AnuncioControl {
 		
 		Usuario u = (Usuario) Usuario.manager.get(uid);
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
-		
 		
 		if(!u.limiteDeLancesAtingido(a.getId()) && a.valorMinimoObservado(lanceValor)){
 			
@@ -86,11 +89,11 @@ public class AnuncioControl {
 	}
 	
 	public ArrayList<Anuncio> getAnuncioPendentes(){
-		return (ArrayList<Anuncio>) Anuncio.manager.fetch("`leilao` IS NULL");
+		return (ArrayList<Anuncio>)(ArrayList<?>) Anuncio.manager.fetch("`leilao` IS NULL");
 	}
 	
 	public ArrayList<Anuncio> getLeiloesAtivas(){
-		return (ArrayList<Anuncio>) Anuncio.manager.fetch("`leilao` IS NOT NULL AND `fechado` = 0");
+		return (ArrayList<Anuncio>)(ArrayList<?>) Anuncio.manager.fetch("`leilao` IS NOT NULL AND `fechado` = 0");
 	}
 
 }

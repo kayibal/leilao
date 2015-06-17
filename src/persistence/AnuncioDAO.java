@@ -55,19 +55,23 @@ public class AnuncioDAO extends SqlGenericDAO{
 		if(object instanceof Anuncio){
 			Anuncio a = (Anuncio) object;
 			StringBuilder b = new StringBuilder();
-			b.append(a.getModelo()).append(", ");
+			int fechado = (a.getFechado()) ? 1 : 0;
+			b.append("'").append(a.getModelo()).append("'").append(", ");
 			b.append(a.getAno()).append(", ");
-			b.append(a.getMotor()).append(", ");
-			b.append(a.getPlaca()).append(", ");
-			b.append(a.getCor()).append(", ");
-			b.append(a.getMarca()).append(", ");
+			b.append("'").append(a.getMotor()).append("'").append(", ");
+			b.append("'").append(a.getPlaca()).append("'").append(", ");
+			b.append("'").append(a.getCor()).append("'").append(", ");
+			b.append("'").append(a.getMarca()).append("'").append(", ");
 			b.append(a.getPotencia()).append(", ");
-			b.append(a.getLanceMin()).append(", ");
-			if (a.getLeilao().getId() > 0){
+			b.append(fechado).append(", ");
+			b.append("'").append(a.getLanceMin()).append("'").append(", ");
+			if (a.getLeilao() != null && a.getLeilao().getId() > 0){
 				b.append(a.getLeilao().getId());
-			} else {
+			} else if(a.getLeilao() != null) {
 				a.getLeilao().save();
 				b.append(a.getLeilao().getId());
+			} else {
+				b.append("NULL");
 			}
 			return b.toString();
 		} else {
