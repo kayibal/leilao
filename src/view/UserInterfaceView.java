@@ -168,9 +168,9 @@ public class UserInterfaceView {
 				e.getMessage();
 			}
 	}
-/*
+
 	private void mostrarAnuncios() {
-		ArrayList<Anuncio> anuncios=ac.getAnuncios();
+		ArrayList<Anuncio> anuncios=ac.getAnuncioPendentes();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
 		Integer i=0;
 		Boolean error=false;
@@ -203,7 +203,7 @@ public class UserInterfaceView {
 	private void mostrarLeilao(int id) {
 		
 	}
-*/
+
 	private void darLance() {
 		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();
@@ -249,12 +249,12 @@ public class UserInterfaceView {
 	private void darPontucao(Integer lid) {
 		Integer pont;
 		Boolean error=false;
-		Anuncio anuncio=ac.getAnuncio(lid);
+		//Anuncio anuncio=ac.getAnuncio(lid);
 		do{
 			System.out.println("Insira a pontuacão:");
 			pont=Integer.valueOf(user_input.next());
 			if(pont>=0&&pont<=2){
-				anuncio.///////
+				//anuncio.///////
 				error=false;
 			}else{
 				error=true;
