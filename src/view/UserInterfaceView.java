@@ -161,18 +161,17 @@ public class UserInterfaceView {
 
 	public void fazerLogin() {
 		String user,password;
+		Boolean keep=true;
 		System.out.println("Sistema de Leilao");
-		do{
-			System.out.println("Digite seu usuário:");
-			user=user_input.next();
-			System.out.println("Digite sua senha:");
-			password=user_input.next();
-			try{
-				uc.fazerLogin(user,password);
-			}catch(BusinessException ex){
-				System.out.println("Usuário ou senha incorretos. Tente novamente.");
-			}
-		}while(true);
+		System.out.println("Digite seu usuário:");
+		user=user_input.next();
+		System.out.println("Digite sua senha:");
+		password=user_input.next();
+		try{
+			uc.fazerLogin(user,password);
+		}catch(BusinessException ex){
+			System.out.println("Usuário ou senha incorretos.");
+		}
 	}
 
 	private void trocarSenha() {
