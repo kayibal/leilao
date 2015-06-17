@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import exceptions.BusinessException;
+
 public class UsuarioDAO extends SqlGenericDAO{
 	
 	private static String tableName = "leiloes_usuario";
@@ -42,7 +44,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 		u.setAttributes(id, nome, CPF, username, senha, telefone, endereco);
 		if(rs.getInt("mediador") == 1)
 			u = (Mediador) u;
-
+		
 		return u;
 	}
 	

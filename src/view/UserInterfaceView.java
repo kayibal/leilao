@@ -3,6 +3,8 @@ package view;
 import business.AnuncioControl;
 import business.UsuarioControl;
 import business.Anuncio;
+
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -29,7 +31,8 @@ public class UserInterfaceView {
 		System.out.println("Select your desired action by typing the according number:");
 		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
-		System.out.println("3. Mostrar Leilões");
+		System.out.println("3. Mostrar Anúncios");
+		System.out.println("4. Trocar senha");
 		
 		selection = user_input.next();
 		switch(selection.trim()){
@@ -41,6 +44,10 @@ public class UserInterfaceView {
 				break;
 			case "3":
 				//this.mostrarAnuncios();
+				this.mostrarMenuPrincipal();
+				break;
+			case "4":
+				this.trocarSenha();
 				this.mostrarMenuPrincipal();
 				break;
 		}
@@ -116,13 +123,43 @@ public class UserInterfaceView {
 			try {
 				uc.trocarSenha(uc.getLoggedUserID(), newpass1);
 			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.getMessage();
 			}
+	}
+/*
+	private void mostrarLeiloes() {
+		ArrayList<Anuncio> anuncios=ac.getAnuncios();
+		Iterator<Anuncio> anunciosIt=anuncios.iterator();
+		Integer i=0;
+		Boolean error=false;
+		while(anunciosIt.hasNext()){
+			Anuncio anuncio=anunciosIt.next();
+			System.out.println(i.toString() + ")" +
+					anuncio.getMarca() + " " +
+					anuncio.getModelo() + " " +
+					anuncio.getAno() + " " +
+					anuncio.getCor() + " " +
+					"#" + anuncio.getId());
+			i++;
+		}
+		do{
+			System.out.println("Escolha um leilão:");
+			Integer lid=Integer.parseInt(user_input.next());
+			if(lid>=0 && lid<i){
+				error=false;
+				this.mostrarLeilao(anuncios.get(lid).getId());
+			}else{
+				System.out.println("Número inválido. Tente novamente.");
+				error=true;
+			}
+		}while(error);
 
 	}
 
-
+	private void mostrarLeilao(int id) {
+		
+	}
+*/
 	private void darLance() {
 		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();

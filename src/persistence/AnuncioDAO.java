@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import exceptions.BusinessException;
+
 public class AnuncioDAO extends SqlGenericDAO{
 
 	private static String tableName = "leiloes_anuncio";
@@ -44,9 +46,10 @@ public class AnuncioDAO extends SqlGenericDAO{
 		Leilao leilao = null;
 		if(!rs.wasNull())
 			leilao = (Leilao) Leilao.manager.get(leilaoId);
-		
 		Anuncio result = new Anuncio();
 		result.setAttributes(id, modelo, ano, motor, placa, cor, marca, potencia, lanceMin, leilao, fechado);
+		result.setLeilao(leilao);
+		result.setId(id);
 		return  result;
 	}
 	

@@ -9,6 +9,11 @@ import persistence.ISerializable;
 import persistence.LeilaoDAO;
 
 public class Leilao implements ISerializable{
+	public Leilao(Integer maxParticipantes, Integer maxLances, Integer maxTempo){
+		this.maxParticipantes=maxParticipantes;
+		this.maxLances=maxLances;
+		this.maxTempo=maxTempo;
+	}
 	
 	public static LeilaoDAO manager = new LeilaoDAO();
 

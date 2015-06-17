@@ -5,10 +5,8 @@ import exceptions.BusinessException;
 import java.util.ArrayList;
 
 public class AnuncioControl {
-	
-	public AnuncioControl(){
-		
-	}
+
+	public AnuncioControl(){}
 
 	public void aprovarAnuncio(int aid, int maxPart, int maxLances, int tempoLimite, Date dataHoraInicio) {
 		
