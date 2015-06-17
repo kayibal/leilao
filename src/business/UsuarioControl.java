@@ -63,6 +63,10 @@ public class UsuarioControl {
 		}
 	}
 	
+	public void fazerLogout(){
+		setLoggedUserID(0);
+	}
+	
 	public Usuario getUserFromID(int id){
 		return (Usuario) Usuario.manager.get(id);
 	}
