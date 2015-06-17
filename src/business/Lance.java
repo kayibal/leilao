@@ -4,9 +4,6 @@ import persistence.ISerializable;
 import persistence.LanceDAO;
 
 public class Lance implements ISerializable{
-	public Lance(Float valor){
-		this.valor=valor;
-	}
 	
 	public static LanceDAO manager = new LanceDAO();
 	
@@ -15,6 +12,10 @@ public class Lance implements ISerializable{
 	private Float valor;
 	Leilao leilao;
 	Usuario usuario;
+	
+	public Lance(Float valor){
+		this.valor=valor;
+	}
 	
 	public Lance(Float valor, Leilao l, Usuario u){
 		this.valor = valor;
@@ -54,7 +55,9 @@ public class Lance implements ISerializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+	/**
+	 * shortcut method to save in database
+	 */
 	public void save(){
 		manager.save(this);
 	}

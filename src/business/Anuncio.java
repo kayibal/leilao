@@ -32,7 +32,19 @@ public class Anuncio implements ISerializable {
 	private Leilao leilao;
 	
 	private Boolean fechado;
-
+	
+	/**
+	 * Constructs a new Anuncio object checking restriction for each attribute
+	 * @param modelo
+	 * @param ano
+	 * @param motor
+	 * @param placa
+	 * @param cor
+	 * @param marca
+	 * @param potencia
+	 * @param lanceMin
+	 * @throws BusinessException in case an attribute does not match with restriction
+	 */
 	public Anuncio(String modelo, Integer ano, String motor, String placa,
 			String cor, String marca, int potencia, Float lanceMin) throws BusinessException{
 		this.setModelo(modelo);
@@ -208,11 +220,18 @@ public class Anuncio implements ISerializable {
 	public void setLeilao(Leilao leilao) {
 		this.leilao = leilao;
 	}
-	
+	/**
+	 * shortcut Method to save or update object in database
+	 */
 	public void save(){
 		manager.save(this);
 	}
 	
+	/**
+	 * Checks if a given value is above the minimum lance
+	 * @param lanceValor the given value
+	 * @return
+	 */
 	public boolean valorMinimoObservado(Float lanceValor){
 		Anuncio a = this;
 		

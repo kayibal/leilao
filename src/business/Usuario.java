@@ -47,7 +47,6 @@ public class Usuario implements ISerializable{
 	 * @param username
 	 * @param senha
 	 * @param telefone
-	 * @param lances
 	 * @param endereco
 	 */
 	public void setAttributes(int id, String nome, Integer cPF, String username,
@@ -123,14 +122,21 @@ public class Usuario implements ISerializable{
 	public void setTelefone(int telefone) {
 		this.telefone = telefone;
 	}
-
+	/**
+	 * fetches all curent lances fresh from database
+	 * @return
+	 */
 	public List<Lance> getAllLances() {
 		HashMap<String,String> filters = new HashMap<String,String>();
 		filters.put("usuario",Integer.toString(id));
 		//@SuppressWarnings("unchecked")
 		return (ArrayList<Lance>) (ArrayList<?>) Lance.manager.fetch(filters);
 	}
-	
+	/**
+	 * Returns the number of lances which have been already made for this instance
+	 * @param leilao
+	 * @return
+	 */
 	public int getNumLancesFromLeilao(Leilao leilao){
 		int numLances=0;
 		Iterator<Lance> itrUsuario=getAllLances().iterator();		
@@ -158,8 +164,8 @@ public class Usuario implements ISerializable{
 	}
 	
 	/**
-	 * Anuncio tem que ter Leilao
-	 * @param uid
+	 * Checks if we already have reached our limit of lances for a given leilao
+	 * it is expected that the given aid has already an active leilao
 	 * @param aid
 	 * @return
 	 */
@@ -171,7 +177,9 @@ public class Usuario implements ISerializable{
 		else return false;
 
 	}
-	
+	/**
+	 * shortcut method for saving or updating this instance in db
+	 */
 	public void save(){
 		manager.save(this);
 	}

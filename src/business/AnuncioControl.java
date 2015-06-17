@@ -6,8 +6,20 @@ import java.util.ArrayList;
 
 public class AnuncioControl {
 
+	/**
+	 * standard constructor
+	 */
 	public AnuncioControl(){}
-
+	
+	/**
+	 * Approves a Anuncio object by specifying a concrete Leilao for it.
+	 * Executes a use case
+	 * @param aid User selected anuncio id
+	 * @param maxPart maximal number of participants
+	 * @param maxLances maximal number of lances
+	 * @param tempoLimite duration of this leilao
+	 * @param dataHoraInicio date and time when it was started
+	 */
 	public void aprovarAnuncio(int aid, int maxPart, int maxLances, int tempoLimite, Date dataHoraInicio) {
 		
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
@@ -15,7 +27,19 @@ public class AnuncioControl {
 		a.setLeilao(l);
 		a.save();
 	}
-
+	
+	/**
+	 * creates a new Anuncio object and saves it to the Database
+	 * @param modelo
+	 * @param ano
+	 * @param motor
+	 * @param cor
+	 * @param placa
+	 * @param marca
+	 * @param potencia
+	 * @param lance
+	 * @throws BusinessException
+	 */
 	public void criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
 		try{
@@ -27,7 +51,7 @@ public class AnuncioControl {
 		
 		
 	}
-	
+	/*
 	private void createSampleData(){
 		String modelo = "Boxter";
 		String ano = "1991";
@@ -44,8 +68,13 @@ public class AnuncioControl {
 			
 		}
 	}
-
-
+*/
+	
+	/**
+	 * Closes an auction and finds the highest bidder
+	 * @param aid anuncio id selected by the user
+	 * @return
+	 */
 	public boolean fecharAnuncio(int aid) {
 		
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
@@ -63,7 +92,13 @@ public class AnuncioControl {
 		return false;
 	}
 	
-
+	/**
+	 * Adds a lance to some Leilao
+	 * @param uid userid of the logged user
+	 * @param aid anuncio id selected by user
+	 * @param lanceValor value for the lance
+	 * @throws BusinessException
+	 */
 	public void darLance(int uid, int aid, float lanceValor) throws BusinessException {
 		
 		Usuario u = (Usuario) Usuario.manager.get(uid);
@@ -75,7 +110,7 @@ public class AnuncioControl {
 				Lance l = new Lance(lanceValor,a.getLeilao(),u);
 				l.save();
 			} else {
-				throw new BusinessException("O anuncio selecionado não tem nenhuma leilao");
+				throw new BusinessException("O anuncio selecionado nao tem nenhuma leilao");
 			}
 		} else {
 			String msg = "Ocorreram os seguintes erros: \n";
@@ -86,10 +121,19 @@ public class AnuncioControl {
 	
 	}
 	
+	/**
+	 * Method to find all Anuncios without an active Leilao
+	 * the SQL in the Business Layer is not so nice but there was no faster way
+	 * @return List of Anuncios
+	 */
 	public ArrayList<Anuncio> getAnuncioPendentes(){
 		return (ArrayList<Anuncio>)(ArrayList<?>) Anuncio.manager.fetch("`leilao` IS NULL");
 	}
 	
+	/**
+	 * Method to find all active Leiloes
+	 * @return
+	 */
 	public ArrayList<Anuncio> getLeiloesAtivas(){
 		return (ArrayList<Anuncio>)(ArrayList<?>) Anuncio.manager.fetch("`leilao` IS NOT NULL AND `fechado` = 0");
 	}

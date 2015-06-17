@@ -23,7 +23,9 @@ public class UserInterfaceView {
 		this.uc = new UsuarioControl();
 		this.ac = new AnuncioControl();
 	}
-
+	/**
+	 * shows the main menu
+	 */
 	public void mostrarMenuPrincipal() {
 		//TODO ver quem esta logado
 		
@@ -31,7 +33,7 @@ public class UserInterfaceView {
 		System.out.println("Select your desired action by typing the according number:");
 		System.out.println("1. Criar Anuncio");
 		System.out.println("2. Realizar Lance");
-		System.out.println("3. Mostrar Anúncios");
+		System.out.println("3. Mostrar Anuncios");
 		System.out.println("4. Trocar senha");
 		
 		selection = user_input.next();
@@ -53,7 +55,10 @@ public class UserInterfaceView {
 		}
 		
 	}
-
+	/**
+	 * starts the use case criarAnuncio
+	 * allow the user to create a new Anuncio and save it
+	 */
 	private void criarAnuncio() {
 		String modelo;
 		System.out.println("Digite o modelo de seu carro");
@@ -84,7 +89,7 @@ public class UserInterfaceView {
 		potencia = user_input.next();
 		
 		String lanceMin;
-		System.out.println("Digite o lance minimo de seu anúncio");
+		System.out.println("Digite o lance minimo de seu anuncio");
 		lanceMin = user_input.next();
 		
 		try{
@@ -96,23 +101,27 @@ public class UserInterfaceView {
 		}
 		
 	}
-
+	/**
+	 * Used to log users in
+	 */
 	public void fazerLogin() {
 		String user,password;
 		System.out.println("Sistema de Leilao");
 		do{
-			System.out.println("Digite seu usuário:");
+			System.out.println("Digite seu usuario:");
 			user=user_input.next();
 			System.out.println("Digite sua senha:");
 			password=user_input.next();
 			try{
 				uc.fazerLogin(user,password);
 			}catch(BusinessException ex){
-				System.out.println("Usuário ou senha incorretos. Tente novamente.");
+				System.out.println("Usuario ou senha incorretos. Tente novamente.");
 			}
 		}while(true);
 	}
-
+	/**
+	 * password change
+	 */
 	private void trocarSenha() {
 		String newpass1, newpass2;
 		System.out.println("Digite sua nova senha:");
@@ -143,13 +152,13 @@ public class UserInterfaceView {
 			i++;
 		}
 		do{
-			System.out.println("Escolha um leilão:");
+			System.out.println("Escolha um leilao:");
 			Integer lid=Integer.parseInt(user_input.next());
 			if(lid>=0 && lid<i){
 				error=false;
 				this.mostrarLeilao(anuncios.get(lid).getId());
 			}else{
-				System.out.println("Número inválido. Tente novamente.");
+				System.out.println("Numero invalido. Tente novamente.");
 				error=true;
 			}
 		}while(error);
@@ -160,12 +169,16 @@ public class UserInterfaceView {
 		
 	}
 */
+	/**
+	 * Use case dar lance
+	 * add an lance to some Leilao
+	 */
 	private void darLance() {
 		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();
 		this.mostrarLeiloesAtivas();
 		String anuncioAlvo;
-		System.out.println("Digite o leilão para o qual deseja realizar um lance");
+		System.out.println("Digite o leilao para o qual deseja realizar um lance");
 		anuncioAlvo = user_input.next();
 
 		int aid = Integer.parseInt(anuncioAlvo);
@@ -184,23 +197,35 @@ public class UserInterfaceView {
 		}
 
 	}
-	
+	/**
+	 * shows all pending anuncios to a mediador
+	 */
 	private void mostrarAnunciosPendentes(){
 		//TODO
 	}
 	
+	/**
+	 * shows all active Leilaoes
+	 */
 	private void mostrarLeiloesAtivas(){
 		//TODO
 	}
-
+	/**
+	 * Approvar Anuncio Use Case
+	 * lets a mediador approve an Anuncio
+	 */
 	private void aprovarAnuncios() {
 		//TODO
 	}
-
+	/**
+	 * lets the mediador close some Anuncio
+	 */
 	private void fecharAnuncio() {
 		//TODO
 	}
-
+	/**
+	 * lets a winner add a rating to his winning Leilao
+	 */
 	private void darPontucao() {
 		//TODO
 	}

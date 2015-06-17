@@ -38,7 +38,10 @@ public class SqlLiteManager implements IDatabaseManager {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * this object is a singleton and this method returns the unique instance
+	 * @return
+	 */
 	public static SqlLiteManager getInstance(){
 		if(SqlLiteManager.instance == null){
 			SqlLiteManager.instance = new SqlLiteManager();

@@ -9,11 +9,6 @@ import persistence.ISerializable;
 import persistence.LeilaoDAO;
 
 public class Leilao implements ISerializable{
-	public Leilao(Integer maxParticipantes, Integer maxLances, Integer maxTempo){
-		this.maxParticipantes=maxParticipantes;
-		this.maxLances=maxLances;
-		this.maxTempo=maxTempo;
-	}
 	
 	public static LeilaoDAO manager = new LeilaoDAO();
 
@@ -84,7 +79,10 @@ public class Leilao implements ISerializable{
 	public void setPontuacao(int pontuacao) {
 		this.pontuacao = pontuacao;
 	}
-	
+	/**
+	 * fetches all curent lances fresh from database
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Lance> getLances() {
 		HashMap<String,String> filters = new HashMap<String,String>();
@@ -92,6 +90,9 @@ public class Leilao implements ISerializable{
 		return (ArrayList<Lance>)(ArrayList<?>) Lance.manager.fetch(filters);
 	}
 	
+	/**
+	 * shortcut method to update or save this instance in db
+	 */
 	public void save(){
 		manager.save(this);
 	}

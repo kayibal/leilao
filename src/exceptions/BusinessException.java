@@ -1,5 +1,9 @@
 package exceptions;
-
+/**
+ * This Exception is used to communicate exceptions to the view layer
+ * @author Alan
+ *
+ */
 public class BusinessException extends Exception {
 
 	public BusinessException() {

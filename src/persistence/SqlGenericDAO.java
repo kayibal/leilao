@@ -102,7 +102,10 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * this method is used to obtain all entries in the database
+	 * @return a list of ISerialzable
+	 */
 	public List<? extends ISerializable> all(){
 		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
 		try(
@@ -148,7 +151,11 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * Custom fetch method allows to specify an SQL string inserted after the WHERE statement in the query
+	 * @param filters custom SQL query string
+	 * @return a list of ISerializables
+	 */
 	public List<ISerializable> fetch(String filters) {
 		
 		ArrayList<ISerializable> result = new ArrayList<ISerializable>();
@@ -165,7 +172,11 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	/**
+	 * shortcut mehtod to check if a given id has an object representation in the database
+	 * @param id
+	 * @return
+	 */
 	public Boolean exists(int id){
 		if(get(id) != null){
 			return true;
@@ -205,8 +216,17 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 	 * @throws SQLException 
 	 */
 	protected abstract ISerializable getObject(ResultSet rs) throws SQLException;
-	
+	/**
+	 * Method used to specify the fields this objects posseses in the db
+	 * Must be of same size as getfieldsWithType method
+	 * @return a list of fieldnames 
+	 */
 	protected abstract String getFields();
 	
+	/**
+	 * Method used to specify the fields this objects posseses in the db and also their type an other SQL specific constraints etc.
+	 * Must be of same size as getFields method
+	 * @return a list of fieldnames 
+	 */
 	protected abstract String getFieldsWithTypes();
 }
