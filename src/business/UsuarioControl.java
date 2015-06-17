@@ -48,7 +48,7 @@ public class UsuarioControl {
 		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		
-		if(userlist!=null){
+		if(!userlist.isEmpty()){
 			int id = userlist.get(0).getId();
 			setLoggedUserID(id);
 		}
