@@ -24,17 +24,19 @@ public class UserInterfaceView {
 		this.ac = new AnuncioControl();
 	}
 
-	public void mostrarMenuPrincipal() {
-		
+	public void mostrarMenuPrincipal() {		
 		String selection;
-		System.out.println("Select your desired action by typing the according number:");
-		System.out.println("1. Criar Anuncio");
-		System.out.println("2. Realizar Lance");
-		System.out.println("3. Mostrar Anúncios");
-		System.out.println("4. Trocar senha");
-		
-		selection = user_input.next();
-		switch(selection.trim()){
+		if(uc.getLoggedUserID() != 0){
+			System.out.println("Select your desired action by typing the according number:");
+			System.out.println("1. Criar Anuncio");
+			System.out.println("2. Realizar Lance");
+			System.out.println("3. Mostrar Anúncios");
+			System.out.println("4. Trocar senha");
+			System.out.println("5. Dar pontuacão");
+			System.out.println("6. Logout");
+
+			selection = user_input.next();
+			switch(selection.trim()){
 			case "1":
 				this.criarAnuncio();
 				break;
@@ -49,9 +51,48 @@ public class UserInterfaceView {
 				this.trocarSenha();
 				this.mostrarMenuPrincipal();
 				break;
+			default:
+				System.out.println("Opcão inválida!");
+				break;
+			}
+		}else if(uc.getLoggedUserID() == 0){
+			System.out.println("Selecione a acao desejada:");
+			System.out.println("1. Mostrar Anúncios");
+			System.out.println("2. Realizar cadastro");
+			System.out.println("3. Fazer login");
+
+			selection = user_input.next();
+			switch(selection.trim()){
+			case "1":
+				this.mostrarAnuncios();
+				break;
+			case "2":
+				this.darLance();
+				break;
+			case "3":
+				
+				break;
+			default:
+				System.out.println("Opcão inválida!");
+				break;
+			}
+		}else if(uc.mediadorLogado()){
+			System.out.println("Selecione a acao desejada:");
+			System.out.println("1. Aprovar anuncios");
+			System.out.println("2. Logout");
+
+			selection = user_input.next();
+			switch(selection.trim()){
+			case "1":
+				this.criarAnuncio();
+				break;
+			default:
+				System.out.println("Opcão inválida!");
+				break;
+			}
 		}
-		
 	}
+
 
 	private void criarAnuncio() {
 		String modelo;
@@ -126,7 +167,7 @@ public class UserInterfaceView {
 			}
 	}
 
-	private void mostrarLeiloes() {
+	private void mostrarAnuncios() {
 		ArrayList<Anuncio> anuncios=ac.getAnuncios();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
 		Integer i=0;
@@ -138,6 +179,7 @@ public class UserInterfaceView {
 					anuncio.getModelo() + " " +
 					anuncio.getAno() + " " +
 					anuncio.getCor() + " " +
+					anuncio.getPotencia() + " " +
 					"#" + anuncio.getId());
 			i++;
 		}
@@ -153,10 +195,6 @@ public class UserInterfaceView {
 			}
 		}while(error);
 
-	}
-
-	private void mostrarLeilao(int id) {
-		
 	}
 
 	private void darLance() {
@@ -184,43 +222,29 @@ public class UserInterfaceView {
 
 	}
 
-	private void mostrarAnuncios() {
-		
-		ArrayList<Anuncio> all = this.ac.getAnuncios();
-
-		for(int i = 0; i < all.size(); i++){
-			System.out.println("--------- " + i + " -----------\n");
-			
-			System.out.println(all.get(i).toString());
-			
-			System.out.println("-----------------------\n");
-		}
-		
-
-	}
-
 	private void aprovarAnuncios() {
 
 	}
 
-	private void fecharAnuncio() {
+	private void fecharAnuncio(Integer lid) {
 
 	}
 
-	private void mostrarPerguntas() {
-
-	}
-
-	private void fazerPergunta() {
-
-	}
-
-	private void darResposta() {
-
-	}
-
-	private void darPontucao() {
-
+	private void darPontucao(Integer lid) {
+		Integer pont;
+		Boolean error=false;
+		Anuncio anuncio=ac.getAnuncio(lid);
+		do{
+			System.out.println("Insira a pontuacão:");
+			pont=Integer.valueOf(user_input.next());
+			if(pont>=0&&pont<=2){
+				anuncio.///////
+				error=false;
+			}else{
+				error=true;
+				System.out.println("O valor deve estar compreendido entre 0 e 2. Tente novamente.");
+			}
+		}while(error);
 	}
 
 }
