@@ -161,7 +161,6 @@ public class UserInterfaceView {
 
 	public void fazerLogin() {
 		String user,password;
-		Boolean keep=true;
 		System.out.println("Sistema de Leilao");
 		System.out.println("Digite seu usuário:");
 		user=user_input.next();
@@ -189,10 +188,9 @@ public class UserInterfaceView {
 	}
 
 	private void mostrarAnuncios() {
-		ArrayList<Anuncio> anuncios=ac.getAnuncioPendentes();
+		ArrayList<Anuncio> anuncios=ac.getLeiloesAtivas();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
 		Integer i=0;
-		Boolean error=false;
 		while(anunciosIt.hasNext()){
 			Anuncio anuncio=anunciosIt.next();
 			System.out.println(i.toString() + ")" +
@@ -204,18 +202,6 @@ public class UserInterfaceView {
 					"#" + anuncio.getId());
 			i++;
 		}
-		do{
-			System.out.println("Escolha um leilão:");
-			Integer lid=Integer.parseInt(user_input.next());
-			if(lid>=0 && lid<i){
-				error=false;
-				this.mostrarLeilao(anuncios.get(lid).getId());
-			}else{
-				System.out.println("Número inválido. Tente novamente.");
-				error=true;
-			}
-		}while(error);
-
 	}
 
 
