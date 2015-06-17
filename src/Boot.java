@@ -8,9 +8,12 @@ public class Boot {
 
 	public static void main(String[] args) throws InterruptedException{
 		install();
-		//UserInterfaceView UI = new UserInterfaceView();
-		//UI.mostrarMenuPrincipal();
-		//UI.fazerLogin();
+		UserInterfaceView UI = new UserInterfaceView();
+		UI.mostrarMenuPrincipal();
+		UI.fazerLogin();
+	}
+	
+	public static void DAOtest(){
 		String modelo = "Boxter";
 		int ano = 1991;
 		String cor = "vermelho";
@@ -36,6 +39,7 @@ public class Boot {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	public static void install(){
 		try{
 			Anuncio.manager.initial();
