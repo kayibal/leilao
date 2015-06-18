@@ -5,9 +5,9 @@ import business.UsuarioControl;
 import business.Anuncio;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
@@ -45,41 +45,76 @@ public class UserInterfaceView {
 			
 			String selection;
 			if(uc.getLoggedUserID() != 0){
-				System.out.println("Escolha a acão desejada:");
-				System.out.println("1. Criar Anuncio");
-				System.out.println("2. Realizar Lance");
-				System.out.println("3. Mostrar Anúncios");
-				System.out.println("4. Trocar senha");
-				System.out.println("5. Dar pontuacão");
-				System.out.println("6. Logout");
-				System.out.println("7. Sair");
-				
-				selection = user_input.nextLine();
-				switch(selection.trim()){
-				case "1":
-					this.criarAnuncio();
-					break;
-				case "2":
-					this.darLance();
-					break;
-				case "3":
-					this.mostrarLeiloesAtivos();
-					break;
-				case "4":
-					this.trocarSenha();
-					break;
-				case "5":
-					this.darPontucao();
-					break;
-				case "6":
-					uc.fazerLogout();
-					break;
-				case "7":
-					keep=false;
-					break;
-				default:
-					System.out.println("Opcão inválida!");
-					break;
+				if(uc.mediadorLogado()){
+					System.out.println("Selecione a acão desejada:");
+					System.out.println("1. Listar anuncios pendentes");
+					System.out.println("2. Listar anuncios ativos");
+					System.out.println("3. Aprovar anuncio");
+					System.out.println("4. Fechar anuncio");
+					System.out.println("5. Logout");
+					System.out.println("6. Sair");
+		
+					selection = user_input.nextLine();
+					switch(selection.trim()){
+					case "1":
+						this.mostrarAnunciosPendentes();
+						break;
+					case "2":
+						this.mostrarLeiloesAtivos();
+						break;
+					case "3":
+						this.aprovarAnuncios();
+						break;
+					case "4":
+						this.fecharAnuncio();
+						break;
+					case "5":
+						uc.fazerLogout();
+						break;
+					case "6":
+						keep=false;
+						break;
+					default:
+						System.out.println("Opcão inválida!");
+						break;
+					}
+				}else{
+					System.out.println("Escolha a acão desejada:");
+					System.out.println("1. Criar Anuncio");
+					System.out.println("2. Realizar Lance");
+					System.out.println("3. Mostrar Anúncios");
+					System.out.println("4. Trocar senha");
+					System.out.println("5. Dar pontuacão");
+					System.out.println("6. Logout");
+					System.out.println("7. Sair");
+		
+					selection = user_input.nextLine();
+					switch(selection.trim()){
+					case "1":
+						this.criarAnuncio();
+						break;
+					case "2":
+						this.darLance();
+						break;
+					case "3":
+						this.mostrarLeiloesAtivos();
+						break;
+					case "4":
+						this.trocarSenha();
+						break;
+					case "5":
+						this.darPontucao();
+						break;
+					case "6":
+						uc.fazerLogout();
+						break;
+					case "7":
+						keep=false;
+						break;
+					default:
+						System.out.println("Opcão inválida!");
+						break;
+					}
 				}
 			}else if(uc.getLoggedUserID() == 0){
 				System.out.println("Selecione a acão desejada:");
@@ -99,39 +134,6 @@ public class UserInterfaceView {
 					this.fazerLogin();
 					break;
 				case "4":
-					keep=false;
-					break;
-				default:
-					System.out.println("Opcão inválida!");
-					break;
-				}
-			}else if(uc.mediadorLogado()){
-				System.out.println("Selecione a acão desejada:");
-				System.out.println("1. Listar anuncios pendentes");
-				System.out.println("2. Listar anuncios ativos");
-				System.out.println("3. Aprovar anuncio");
-				System.out.println("4. Fechar anuncio");
-				System.out.println("5. Logout");
-				System.out.println("6. Sair");
-	
-				selection = user_input.nextLine();
-				switch(selection.trim()){
-				case "1":
-					this.mostrarAnunciosPendentes();
-					break;
-				case "2":
-					this.mostrarLeiloesAtivos();
-					break;
-				case "3":
-					this.aprovarAnuncios();
-					break;
-				case "4":
-					this.fecharAnuncio();
-					break;
-				case "5":
-					uc.fazerLogout();
-					break;
-				case "6":
 					keep=false;
 					break;
 				default:
@@ -321,13 +323,7 @@ public class UserInterfaceView {
 		tempoLimite=user_input.nextLine();
 		System.out.println("Insira a data e hora de início:");
 		dataHoraInicio=user_input.nextLine();
-		Date fim = null;
-		try {
-			fim = (Date) df.parse(dataHoraInicio);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		java.sql.Date fim = new Date(Calendar.getInstance().getTimeInMillis());
 		ac.aprovarAnuncio(Integer.parseInt(aid), Integer.parseInt(maxPart),
 				Integer.parseInt(maxLances), Integer.parseInt(tempoLimite),
 				fim);
@@ -335,8 +331,13 @@ public class UserInterfaceView {
 	/**
 	 * lets the mediador close some Anuncio
 	 */
+	
+	//pode excluir
 	private void fecharAnuncio() {
-
+		this.mostrarLeiloesAtivos();
+		System.out.println("Escolha o leilão a ser fechado:");
+		Integer aid=Integer.parseInt(user_input.nextLine());
+		//ac.fecharAnuncio(aid);
 	}
 	/**
 	 * lets a winner add a rating to his winning Leilao
@@ -344,11 +345,21 @@ public class UserInterfaceView {
 	private void darPontucao() {
 		Integer pont;
 		Boolean error=false;
+		this.mostrarLeiloesAtivos();
+		System.out.println("Escolha o leilão:");
+		Integer aid = Integer.parseInt(user_input.nextLine());
 		do{
 			System.out.println("Insira a pontuacão:");
 			pont=Integer.valueOf(user_input.nextLine());
 			if(pont>=0&&pont<=2){
-				//anuncio.///////
+				try {
+					uc.darPontucao(aid, pont);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BusinessException e) {
+					System.out.println(e.getMessage());
+				}
 				error=false;
 			}else{
 				error=true;
