@@ -43,8 +43,9 @@ public class UsuarioDAO extends SqlGenericDAO{
 		Usuario u = new Usuario();
 		u.setAttributes(id, nome, CPF, username, senha, telefone, endereco);
 		if(rs.getInt("mediador") == 1){
-			u = new Mediador();
-			u.setAttributes(id, nome, CPF, username, senha, telefone, endereco);
+			Mediador m = new Mediador();
+			m.setAttributes(id, nome, CPF, username, senha, telefone, endereco);
+			return m;
 		}
 		return u;
 	}

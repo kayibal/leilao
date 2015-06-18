@@ -4,7 +4,12 @@ import business.AnuncioControl;
 import business.UsuarioControl;
 import business.Anuncio;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -40,7 +45,7 @@ public class UserInterfaceView {
 				System.out.println("6. Logout");
 				System.out.println("7. Sair");
 	
-				selection = user_input.next();
+				selection = user_input.nextLine();
 				switch(selection.trim()){
 				case "1":
 					this.criarAnuncio();
@@ -73,8 +78,7 @@ public class UserInterfaceView {
 				System.out.println("2. Realizar cadastro");
 				System.out.println("3. Fazer login");
 				System.out.println("4. Sair");
-	
-				selection = user_input.next();
+				selection = user_input.nextLine();
 				switch(selection.trim()){
 				case "1":
 					this.mostrarLeiloesAtivos();
@@ -101,7 +105,7 @@ public class UserInterfaceView {
 				System.out.println("5. Logout");
 				System.out.println("6. Sair");
 	
-				selection = user_input.next();
+				selection = user_input.nextLine();
 				switch(selection.trim()){
 				case "1":
 					this.mostrarAnunciosPendentes();
@@ -133,35 +137,36 @@ public class UserInterfaceView {
 	private void criarAnuncio() {
 		String modelo;
 		System.out.println("Digite o modelo de seu carro");
-		modelo = user_input.next();
+		modelo = user_input.nextLine();
 
 		String ano;
 		System.out.println("Digite o ano de seu carro");
-		ano = user_input.next();
+		ano = user_input.nextLine();
 		
 		String motor;
 		System.out.println("Digite o motor de seu carro");
-		motor = user_input.next();
+		motor = user_input.nextLine();
 		
 		String placa;
 		System.out.println("Digite a placa de seu carro");
-		placa = user_input.next();
+		placa = user_input.nextLine();
 		
 		String cor;
 		System.out.println("Digite a cor de seu carro");
-		cor = user_input.next();
+		cor = user_input.nextLine();
 		
 		String marca;
 		System.out.println("Digite a marca de seu carro");
-		marca = user_input.next();
+		marca = user_input.nextLine();
 		
 		String potencia;
 		System.out.println("Digite a potencia de seu carro");
-		potencia = user_input.next();
+		potencia = user_input.nextLine();
 		
 		String lanceMin;
-		System.out.println("Digite o lance minimo de seu anuncio");
-		lanceMin = user_input.next();
+
+		System.out.println("Digite o lance minimo de seu anúncio");
+		lanceMin = user_input.nextLine();
 		
 		try{
 			ac.criarAnuncio(modelo, ano, motor, cor, placa, marca, potencia, lanceMin);
@@ -177,12 +182,10 @@ public class UserInterfaceView {
 	 */
 	public void fazerLogin() {
 		String user,password;
-		System.out.println("Sistema de Leilao");
-
 		System.out.println("Digite seu usuário:");
-		user=user_input.next();
+		user=user_input.nextLine();
 		System.out.println("Digite sua senha:");
-		password=user_input.next();
+		password=user_input.nextLine();
 		try{
 			uc.fazerLogin(user,password);
 		}catch(BusinessException e){
@@ -209,32 +212,32 @@ public class UserInterfaceView {
 	private void mostrarLeiloesAtivos() {
 		ArrayList<Anuncio> anuncios=ac.getLeiloesAtivas();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
-		Integer i=0;
-		while(anunciosIt.hasNext()){
-			Anuncio anuncio=anunciosIt.next();
-			System.out.println(i.toString() + ")" +
-					anuncio.getMarca() + " " +
-					anuncio.getModelo() + " " +
-					anuncio.getAno() + " " +
-					anuncio.getCor() + " " +
-					anuncio.getPotencia() + " " +
-					"#" + anuncio.getId());
-			i++;
-		}
+		if(anuncios.isEmpty())
+			System.out.println("Não há anúncios ativos!");
+		else
+			while(anunciosIt.hasNext()){
+				Anuncio anuncio=anunciosIt.next();
+				System.out.println(anuncio.getMarca() + " " +
+						anuncio.getModelo() + " " +
+						anuncio.getAno() + " " +
+						anuncio.getCor() + " " +
+						anuncio.getPotencia() + " " +
+						"#" + anuncio.getId());
+			}
 	}
 	private void darLance() {
 		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();
 		this.mostrarLeiloesAtivos();
 		String anuncioAlvo;
-		System.out.println("Digite o leilao para o qual deseja realizar um lance");
-		anuncioAlvo = user_input.next();
+		System.out.println("Digite o leilão para o qual deseja realizar um lance");
+		anuncioAlvo = user_input.nextLine();
 
 		int aid = Integer.parseInt(anuncioAlvo);
 
 		String lanceValorString;
 		System.out.println("Digite o valor do lance");
-		lanceValorString = user_input.next();
+		lanceValorString = user_input.nextLine();
 		float lanceValor = Float.parseFloat(lanceValorString);
 
 		try{
@@ -252,20 +255,20 @@ public class UserInterfaceView {
 		Boolean keep=true;
 		
 		System.out.println("Insira seu nome completo:");
-		nome=user_input.next();
+		nome=user_input.nextLine();
 		System.out.println("Insira seu endereco:");
-		endereco=user_input.next();
+		endereco=user_input.nextLine();
 		System.out.println("Insira seu CPF:");
-		CPF=user_input.next();
+		CPF=user_input.nextLine();
 		System.out.println("Insira seu telefone:");
-		telefone=user_input.next();
+		telefone=user_input.nextLine();
 		System.out.println("Insira seu username:");
-		username=user_input.next();
+		username=user_input.nextLine();
 		do{
 			System.out.println("Insira sua senha:");
-			senha1=user_input.next();
+			senha1=user_input.nextLine();
 			System.out.println("Confirme sua senha:");
-			senha2=user_input.next();
+			senha2=user_input.nextLine();
 			if(senha1.equals(senha2))
 				keep=false;
 			else
@@ -281,22 +284,44 @@ public class UserInterfaceView {
 	private void mostrarAnunciosPendentes(){
 		ArrayList<Anuncio> anuncios=ac.getAnuncioPendentes();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
-		Integer i=0;
-		while(anunciosIt.hasNext()){
-			Anuncio anuncio=anunciosIt.next();
-			System.out.println(i.toString() + ")" +
-					anuncio.getMarca() + " " +
-					anuncio.getModelo() + " " +
-					anuncio.getAno() + " " +
-					anuncio.getCor() + " " +
-					anuncio.getPotencia() + " " +
-					"#" + anuncio.getId());
-			i++;
-		}
+		if(anuncios.isEmpty())
+			System.out.println("Não há anúncios pendentes!");
+		else
+			while(anunciosIt.hasNext()){
+				Anuncio anuncio=anunciosIt.next();
+				System.out.println(anuncio.getMarca() + " " +
+						anuncio.getModelo() + " " +
+						anuncio.getAno() + " " +
+						anuncio.getCor() + " " +
+						anuncio.getPotencia() + " " +
+						"#" + anuncio.getId());
+			}
 	}
-	
+
 	private void aprovarAnuncios() {
-		//TODO
+		String aid, maxPart, maxLances, tempoLimite, dataHoraInicio;
+		DateFormat df = new SimpleDateFormat("MMM dd HH:mm:ss yyyy", Locale.ENGLISH);
+		this.mostrarAnunciosPendentes();
+		System.out.println("Escolha o anúncio a ser aprovado:");
+		aid=user_input.nextLine();
+		System.out.println("Insira o número máximo de participantes:");
+		maxPart=user_input.nextLine();
+		System.out.println("Insira o número máximo de lances:");
+		maxLances=user_input.nextLine();
+		System.out.println("Insira o tempo limite:");
+		tempoLimite=user_input.nextLine();
+		System.out.println("Insira a data e hora de início:");
+		dataHoraInicio=user_input.nextLine();
+		Date fim = null;
+		try {
+			fim = (Date) df.parse(dataHoraInicio);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ac.aprovarAnuncio(Integer.parseInt(aid), Integer.parseInt(maxPart),
+				Integer.parseInt(maxLances), Integer.parseInt(tempoLimite),
+				fim);
 	}
 	/**
 	 * lets the mediador close some Anuncio
@@ -312,7 +337,7 @@ public class UserInterfaceView {
 		Boolean error=false;
 		do{
 			System.out.println("Insira a pontuacão:");
-			pont=Integer.valueOf(user_input.next());
+			pont=Integer.valueOf(user_input.nextLine());
 			if(pont>=0&&pont<=2){
 				//anuncio.///////
 				error=false;
