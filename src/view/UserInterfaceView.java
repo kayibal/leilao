@@ -323,7 +323,10 @@ public class UserInterfaceView {
 	 * lets the mediador close some Anuncio
 	 */
 	private void fecharAnuncio() {
-
+		this.mostrarLeiloesAtivos();
+		System.out.println("Escolha o leilão a ser fechado:");
+		Integer aid=Integer.parseInt(user_input.nextLine());
+		ac.fecharAnuncio(aid);
 	}
 	/**
 	 * lets a winner add a rating to his winning Leilao
@@ -333,13 +336,13 @@ public class UserInterfaceView {
 		Boolean error=false;
 		this.mostrarLeiloesAtivos();
 		System.out.println("Escolha o leilão:");
-		String aid = user_input.nextLine();
+		Integer aid = Integer.parseInt(user_input.nextLine());
 		do{
 			System.out.println("Insira a pontuacão:");
 			pont=Integer.valueOf(user_input.nextLine());
 			if(pont>=0&&pont<=2){
 				try {
-					uc.darPontucao(Integer.parseInt(aid), pont);
+					uc.darPontucao(aid, pont);
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
