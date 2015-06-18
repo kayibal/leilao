@@ -1,8 +1,8 @@
 import java.util.Date;
 
-import exceptions.BusinessException;
 import view.UserInterfaceView;
 import business.*;
+import business.exceptions.BusinessException;
 
 public class Boot {
 

@@ -2,7 +2,8 @@ package business;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import exceptions.BusinessException;
+
+import business.exceptions.BusinessException;
 
 public class UsuarioControl {
 

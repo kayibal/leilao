@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import exceptions.BusinessException;
+import business.exceptions.BusinessException;
+
 
 import persistence.UsuarioDAO;
 import persistence.ISerializable;

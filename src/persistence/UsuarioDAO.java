@@ -2,6 +2,7 @@ package persistence;
 import business.Lance;
 import business.Mediador;
 import business.Usuario;
+import business.exceptions.BusinessException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import exceptions.BusinessException;
 
 public class UsuarioDAO extends SqlGenericDAO{
 	

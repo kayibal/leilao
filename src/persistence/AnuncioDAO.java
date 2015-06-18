@@ -1,13 +1,13 @@
 package persistence;
 import business.Anuncio;
 import business.Leilao;
+import business.exceptions.BusinessException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import exceptions.BusinessException;
 
 public class AnuncioDAO extends SqlGenericDAO{
 

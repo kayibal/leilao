@@ -3,6 +3,7 @@ package view;
 import business.AnuncioControl;
 import business.UsuarioControl;
 import business.Anuncio;
+import business.exceptions.BusinessException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,6 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import exceptions.BusinessException;
 
 
 public class UserInterfaceView {

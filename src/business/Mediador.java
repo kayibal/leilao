@@ -1,6 +1,6 @@
 package business;
 
-import exceptions.BusinessException;
+import business.exceptions.BusinessException;
 
 public class Mediador extends Usuario {
 	public Mediador(String nome, Integer tel, String username, String senha) throws BusinessException{

@@ -1,4 +1,4 @@
-package exceptions;
+package business.exceptions;
 /**
  * This Exception is used to communicate exceptions to the view layer
  * @author Alan

@@ -1,11 +1,10 @@
 package business;
 
-import exceptions.BusinessException;
+import business.exceptions.BusinessException;
 
 import persistence.AnuncioDAO;
 import persistence.ISerializable;
 
-import exceptions.BusinessException;
 
 public class Anuncio implements ISerializable {
 	
