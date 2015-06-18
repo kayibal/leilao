@@ -88,8 +88,6 @@ public class AnuncioControl {
 					if(max==null || l.getValor()>max.getValor()) max = l;
 				}
 				a.getLeilao().setVencedorID(max.getId());
-			} else {
-				throw new BusinessException("Leilao nao tem nenhum lance");
 			}
 			a.setFechado(true);
 		} else {

@@ -66,8 +66,8 @@ public class AnuncioDAO extends SqlGenericDAO{
 			b.append("'").append(a.getCor()).append("'").append(", ");
 			b.append("'").append(a.getMarca()).append("'").append(", ");
 			b.append(a.getPotencia()).append(", ");
+			b.append(a.getLanceMin()).append(", ");
 			b.append(fechado).append(", ");
-			b.append("'").append(a.getLanceMin()).append("'").append(", ");
 			if (a.getLeilao() != null && a.getLeilao().getId() > 0){
 				b.append(a.getLeilao().getId());
 			} else if(a.getLeilao() != null) {

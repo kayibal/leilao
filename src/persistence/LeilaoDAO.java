@@ -25,7 +25,7 @@ public class LeilaoDAO extends SqlGenericDAO {
 		fields.put("pontucao", 				"INTEGER");
 		fields.put("data", 					"INTEGER");
 		fields.put("vencedor", 				"INTEGER");
-		System.out.println("LeilaoDAO constructed");
+		//System.out.println("LeilaoDAO constructed");
 	}
 	
 	@Override

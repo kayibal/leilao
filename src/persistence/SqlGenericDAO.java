@@ -61,15 +61,15 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 			Statement stmt = c.createStatement();
 			Statement stmt2 = c.createStatement();
 			){
-			System.out.println(query);
+			//System.out.println(query);
 			int affectedRows = stmt.executeUpdate(query);
-			System.out.println(affectedRows);
+			//System.out.println(affectedRows);
 			if(affectedRows > 0){
 				ResultSet affectedKeys = stmt2.executeQuery("SELECT last_insert_rowid()");
 				if(affectedKeys.next()){
 					//Maybe change id to long
 					Obj.setId(affectedKeys.getInt(1));
-					System.out.println(Obj.getId());
+					//System.out.println(Obj.getId());
 					affectedKeys.close();
 					return Obj.getId();
 				} else {

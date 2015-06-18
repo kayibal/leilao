@@ -27,7 +27,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 		fields.put("telefone", "INTEGER");
 		fields.put("endereco", 	"TEXT");
 		fields.put("mediador", "INTEGER");
-		System.out.println("UsuarioDAO constructed");
+		//System.out.println("UsuarioDAO constructed");
 	}
 	
 	@Override

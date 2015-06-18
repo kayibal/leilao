@@ -19,7 +19,7 @@ public class LanceDAO extends SqlGenericDAO{
 		fields.put("valor",	"REAL NOT NULL");
 		fields.put("usuario", "INTEGER NOT NULL");
 		fields.put("leilao", "INTEGER NOT NULL");
-		System.out.println("LanceDAO constructed");
+		//System.out.println("LanceDAO constructed");
 	}
 	
 	@Override

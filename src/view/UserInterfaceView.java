@@ -82,7 +82,7 @@ public class UserInterfaceView {
 					System.out.println("Escolha a acão desejada:");
 					System.out.println("1. Criar Anuncio");
 					System.out.println("2. Realizar Lance");
-					System.out.println("3. Mostrar Anúncios");
+					System.out.println("3. Mostrar Leiloes");
 					System.out.println("4. Trocar senha");
 					System.out.println("5. Dar pontuacão");
 					System.out.println("6. Logout");
@@ -118,7 +118,7 @@ public class UserInterfaceView {
 				}
 			}else if(uc.getLoggedUserID() == 0){
 				System.out.println("Selecione a acão desejada:");
-				System.out.println("1. Mostrar Anúncios");
+				System.out.println("1. Mostrar Leiloes");
 				System.out.println("2. Realizar cadastro");
 				System.out.println("3. Fazer login");
 				System.out.println("4. Sair");
@@ -144,6 +144,7 @@ public class UserInterfaceView {
 		}while(keep);
 	}
 
+	
 
 	private void criarAnuncio() {
 		String modelo;
@@ -226,15 +227,19 @@ public class UserInterfaceView {
 		if(anuncios.isEmpty())
 			System.out.println("Não há anúncios ativos!");
 		else
+			System.out.println("\n======== Leiloes =======\n");
 			while(anunciosIt.hasNext()){
 				Anuncio anuncio=anunciosIt.next();
-				System.out.println(anuncio.getMarca() + " " +
+				System.out.println(
+						"#" + anuncio.getId() + "     " +
+						anuncio.getMarca() + " " +
 						anuncio.getModelo() + " " +
 						anuncio.getAno() + " " +
 						anuncio.getCor() + " " +
-						anuncio.getPotencia() + " " +
-						"#" + anuncio.getId());
+						anuncio.getPotencia() + " " 
+						);
 			}
+		System.out.println("\n=========================\n");
 	}
 	private void darLance() {
 		//TODO Refactor might be necessary
@@ -289,6 +294,8 @@ public class UserInterfaceView {
 			uc.cadastrarUsuario(nome, endereco, Integer.parseInt(CPF), Integer.parseInt(telefone), username, senha1);
 		} catch (BusinessException e) {
 			System.out.println(e.getMessage());
+		} catch (NumberFormatException e){
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -298,15 +305,19 @@ public class UserInterfaceView {
 		if(anuncios.isEmpty())
 			System.out.println("Não há anúncios pendentes!");
 		else
+			System.out.println("\n========Anuncios Pendentes========\n");
 			while(anunciosIt.hasNext()){
 				Anuncio anuncio=anunciosIt.next();
-				System.out.println(anuncio.getMarca() + " " +
+				System.out.println(
+						"#" + anuncio.getId() + "    " +
+						anuncio.getMarca() + " " +
 						anuncio.getModelo() + " " +
 						anuncio.getAno() + " " +
 						anuncio.getCor() + " " +
-						anuncio.getPotencia() + " " +
-						"#" + anuncio.getId());
+						anuncio.getPotencia() + " " 
+						);
 			}
+			System.out.println("\n=========================\n");
 	}
 
 	private void aprovarAnuncios() {

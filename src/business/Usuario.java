@@ -99,7 +99,7 @@ public class Usuario implements ISerializable{
 			this.username = username;
 		}
 		else{
-			throw new BusinessException("Username Invalido\n");
+			throw new BusinessException("Username Invalido: " + username + "\n");
 		}
 	}
 
