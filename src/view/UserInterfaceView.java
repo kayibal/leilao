@@ -76,7 +76,6 @@ public class UserInterfaceView {
 				System.out.println("2. Realizar cadastro");
 				System.out.println("3. Fazer login");
 				System.out.println("4. Sair");
-	
 				selection = user_input.nextLine();
 				switch(selection.trim()){
 				case "1":
@@ -206,15 +205,18 @@ public class UserInterfaceView {
 	private void mostrarLeiloesAtivos() {
 		ArrayList<Anuncio> anuncios=ac.getLeiloesAtivas();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
-		while(anunciosIt.hasNext()){
-			Anuncio anuncio=anunciosIt.next();
-			System.out.println(anuncio.getMarca() + " " +
-					anuncio.getModelo() + " " +
-					anuncio.getAno() + " " +
-					anuncio.getCor() + " " +
-					anuncio.getPotencia() + " " +
-					"#" + anuncio.getId());
-		}
+		if(anuncios.isEmpty())
+			System.out.println("Não há anúncios ativos!");
+		else
+			while(anunciosIt.hasNext()){
+				Anuncio anuncio=anunciosIt.next();
+				System.out.println(anuncio.getMarca() + " " +
+						anuncio.getModelo() + " " +
+						anuncio.getAno() + " " +
+						anuncio.getCor() + " " +
+						anuncio.getPotencia() + " " +
+						"#" + anuncio.getId());
+			}
 	}
 
 	private void darLance() {
@@ -277,15 +279,18 @@ public class UserInterfaceView {
 	private void mostrarAnunciosPendentes(){
 		ArrayList<Anuncio> anuncios=ac.getAnuncioPendentes();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
-		while(anunciosIt.hasNext()){
-			Anuncio anuncio=anunciosIt.next();
-			System.out.println(anuncio.getMarca() + " " +
-					anuncio.getModelo() + " " +
-					anuncio.getAno() + " " +
-					anuncio.getCor() + " " +
-					anuncio.getPotencia() + " " +
-					"#" + anuncio.getId());
-		}
+		if(anuncios.isEmpty())
+			System.out.println("Não há anúncios pendentes!");
+		else
+			while(anunciosIt.hasNext()){
+				Anuncio anuncio=anunciosIt.next();
+				System.out.println(anuncio.getMarca() + " " +
+						anuncio.getModelo() + " " +
+						anuncio.getAno() + " " +
+						anuncio.getCor() + " " +
+						anuncio.getPotencia() + " " +
+						"#" + anuncio.getId());
+			}
 	}
 	
 	@SuppressWarnings("deprecation")
