@@ -9,7 +9,7 @@ public class Boot {
 	public static void main(String[] args) throws InterruptedException{
 		install();
 		UserInterfaceView UI = new UserInterfaceView();
-		//createMediador();
+		createMediador();
 		UI.mostrarMenuPrincipal();
 	}
 	
