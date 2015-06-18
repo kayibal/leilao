@@ -53,7 +53,7 @@ public class UserInterfaceView {
 					this.trocarSenha();
 					break;
 				case "5":
-					this.darPontucao(null);
+					this.darPontucao();
 					break;
 				case "6":
 					uc.fazerLogout();
@@ -92,19 +92,31 @@ public class UserInterfaceView {
 				}
 			}else if(uc.mediadorLogado()){
 				System.out.println("Selecione a acão desejada:");
-				System.out.println("1. Aprovar anuncios");
-				System.out.println("2. Logout");
-				System.out.println("3. Sair");
+				System.out.println("1. Listar anuncios pendentes");
+				System.out.println("2. Listar anuncios ativos");
+				System.out.println("3. Aprovar anuncio");
+				System.out.println("4. Fechar anuncio");
+				System.out.println("5. Logout");
+				System.out.println("6. Sair");
 	
 				selection = user_input.next();
 				switch(selection.trim()){
 				case "1":
-					this.criarAnuncio();
+					this.mostrarAnunciosPendentes();
 					break;
 				case "2":
-					uc.fazerLogout();
+					this.mostrarLeiloesAtivos();
+					break;
+				case "3":
+					this.aprovarAnuncios();
 					break;
 				case "4":
+					this.fecharAnuncio();
+					break;
+				case "5":
+					uc.fazerLogout();
+					break;
+				case "6":
 					keep=false;
 					break;
 				default:
@@ -282,11 +294,11 @@ public class UserInterfaceView {
 		//TODO
 	}
 
-	private void fecharAnuncio(Integer lid) {
+	private void fecharAnuncio() {
 
 	}
 
-	private void darPontucao(Integer lid) {
+	private void darPontucao() {
 		Integer pont;
 		Boolean error=false;
 		do{
