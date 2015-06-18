@@ -331,11 +331,21 @@ public class UserInterfaceView {
 	private void darPontucao() {
 		Integer pont;
 		Boolean error=false;
+		this.mostrarLeiloesAtivos();
+		System.out.println("Escolha o leilão:");
+		String aid = user_input.nextLine();
 		do{
 			System.out.println("Insira a pontuacão:");
 			pont=Integer.valueOf(user_input.nextLine());
 			if(pont>=0&&pont<=2){
-				//anuncio.///////
+				try {
+					uc.darPontucao(Integer.parseInt(aid), pont);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BusinessException e) {
+					System.out.println(e.getMessage());
+				}
 				error=false;
 			}else{
 				error=true;
