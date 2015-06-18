@@ -5,11 +5,11 @@ package persistence.dbmanager;
  * we will skip this for simplicity reasons
  */
 public class SqlLiteConfiguration implements IDBConfiguration{
-	private String DatabaseName = "leilaoDb";
+	private String databaseName = "leilaoDb";
 
 	@Override
 	public String getDatabaseName() {
-		return DatabaseName;
+		return databaseName;
 	}
 
 	@Override

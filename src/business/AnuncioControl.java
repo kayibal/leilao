@@ -43,7 +43,7 @@ public class AnuncioControl {
 	public void criarAnuncio(String modelo, String ano, String motor, String cor, String placa,  String marca, String potencia, String lance) throws BusinessException {
 		
 		try{
-			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, cor, placa,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
+			Anuncio a = new Anuncio(modelo, Integer.parseInt(ano), motor, placa, cor,  marca, Integer.parseInt(potencia), Float.parseFloat(lance) );
 			a.save();
 		} catch (BusinessException e) {
 			throw new BusinessException("Anuncio nao foi criado:\n" + e.getMessage());

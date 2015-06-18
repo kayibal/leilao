@@ -27,8 +27,8 @@ public class UsuarioControl {
 		filters.put("username", username);
 		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
-		if(userlist!=null){
-			throw new BusinessException("Usuario nao foi cadastrado: username ja em uso\n");
+		if(!userlist.isEmpty()){
+			throw new BusinessException("Usuario não foi cadastrado: username já em uso\n");
 		}
 		
 		try{
@@ -68,7 +68,7 @@ public class UsuarioControl {
 		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
 		
-		if(userlist!=null){
+		if(!userlist.isEmpty()){
 			int id = userlist.get(0).getId();
 			setLoggedUserID(id);
 		}
@@ -76,17 +76,17 @@ public class UsuarioControl {
 			//build Exception
 			String msg = "Falha no login: \n";
 			
-			if(userlist==null){
+			if(userlist.isEmpty()){
 				msg += "Usuario ou Senha incorretos\n";
 			}
 			throw new BusinessException(msg);
 		}
 	}
-	/**
-	 * Finds a User by a given id in the database
-	 * @param id a valid user id
-	 * @return A user object or null if not found
-	 */
+	
+	public void fazerLogout(){
+		setLoggedUserID(0);
+	}
+	
 	public Usuario getUserFromID(int id){
 		return (Usuario) Usuario.manager.get(id);
 	}

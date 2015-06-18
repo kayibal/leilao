@@ -45,7 +45,7 @@ public abstract class SqlGenericDAO implements IGenericDAO<ISerializable> {
 						Double.parseDouble(values[i]);
 						b.append(fields[i]).append(" = ").append(values[i]);
 					} catch(NumberFormatException e){
-						b.append(fields[i]).append(" = ").append("'").append(values[i]).append("'");
+						b.append(fields[i]).append(" = ").append(values[i]);
 					}
 					if(i < fields.length - 1){
 						b.append(", ");

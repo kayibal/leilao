@@ -10,7 +10,16 @@ public class Boot {
 		install();
 		UserInterfaceView UI = new UserInterfaceView();
 		UI.mostrarMenuPrincipal();
-		UI.fazerLogin();
+	}
+	
+	public static void createMeadiador(){
+		try {
+			Mediador m = new Mediador("Superuser", 12345678, "admin", "password");
+			m.save();
+		} catch (BusinessException e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 	
 	public static void DAOtest(){
