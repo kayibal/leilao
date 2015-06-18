@@ -9,10 +9,11 @@ public class Boot {
 	public static void main(String[] args) throws InterruptedException{
 		install();
 		UserInterfaceView UI = new UserInterfaceView();
+		//createMediador();
 		UI.mostrarMenuPrincipal();
 	}
 	
-	public static void createMeadiador(){
+	public static void createMediador(){
 		try {
 			Mediador m = new Mediador("Superuser", 12345678, "admin", "password");
 			m.save();
