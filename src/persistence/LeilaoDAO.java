@@ -24,6 +24,7 @@ public class LeilaoDAO extends SqlGenericDAO {
 		fields.put("max_tempo", 			"INTEGER");
 		fields.put("pontucao", 				"INTEGER");
 		fields.put("data", 					"INTEGER");
+		fields.put("vencedor", 				"INTEGER");
 		System.out.println("LeilaoDAO constructed");
 	}
 	
@@ -35,12 +36,13 @@ public class LeilaoDAO extends SqlGenericDAO {
 		int maxTempo = rs.getInt("max_tempo");
 		int pontuacao = rs.getInt("pontucao");
 		long seconds = rs.getInt("data");
+		int vencedor = rs.getInt("vencedor");
 		
 		Date data = new Date(seconds);
 		Leilao leilao = new Leilao(maxParticipantes, maxLances, maxTempo, data);
 		leilao.setPontuacao(pontuacao);
 		leilao.setId(id);
-				
+		leilao.setVencedorID(vencedor);
 		return leilao;
 	}
 
@@ -53,8 +55,8 @@ public class LeilaoDAO extends SqlGenericDAO {
 			b.append(l.getMaxLances()).append(", ");
 			b.append(l.getMaxTempo()).append(", ");
 			b.append(l.getPontuacao()).append(", ");
-			b.append(l.getDataInicio().getTime());
-
+			b.append(l.getDataInicio().getTime()).append(", ");
+			b.append(l.getVencedorID());
 			
 			return b.toString();
 		} else {

@@ -34,6 +34,15 @@ public class UserInterfaceView {
 	public void mostrarMenuPrincipal() {		
 		Boolean keep=true;
 		do{
+			/*
+			 * Pseudo Cronjob checks everytime user visits main menu for finished Leiloes
+			 */
+			try {
+				ac.fecharAnuncios();
+			} catch (BusinessException e) {
+				throw new RuntimeException("Pseudo Cronjob failed: "+e.getMessage());
+			}
+			
 			String selection;
 			if(uc.getLoggedUserID() != 0){
 				System.out.println("Escolha a acão desejada:");
@@ -44,7 +53,7 @@ public class UserInterfaceView {
 				System.out.println("5. Dar pontuacão");
 				System.out.println("6. Logout");
 				System.out.println("7. Sair");
-	
+				
 				selection = user_input.nextLine();
 				switch(selection.trim()){
 				case "1":

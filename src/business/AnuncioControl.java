@@ -1,8 +1,9 @@
 package business;
 
-import java.sql.Date;
+import java.util.Date;
 import exceptions.BusinessException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AnuncioControl {
 
@@ -73,23 +74,37 @@ public class AnuncioControl {
 	/**
 	 * Closes an auction and finds the highest bidder
 	 * @param aid anuncio id selected by the user
-	 * @return
 	 */
-	public boolean fecharAnuncio(int aid) {
+	public void fecharAnuncio(int aid) throws BusinessException {
 		
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		
-		if(a.getLeilao()==null) return false;
+		if(a.getLeilao()!=null) {
 		
-		if(!a.getLeilao().getLances().isEmpty()){
-			Lance max = null;
-			for(Lance l: a.getLeilao().getLances()){
-				if(max==null || l.getValor()>max.getValor()) max = l;
+			if(!a.getLeilao().getLances().isEmpty()){
+				Lance max = null;
+				for(Lance l: a.getLeilao().getLances()){
+					if(max==null || l.getValor()>max.getValor()) max = l;
+				}
+				a.getLeilao().setVencedorID(max.getId());
+			} else {
+				throw new BusinessException("Leilao nao tem nenhum lance");
 			}
-			a.getLeilao().setVencedorID(max.getId());
+			a.setFechado(true);
+		} else {
+			throw new BusinessException("Anuncio nao tem uma leilao asociada");
 		}
-		a.setFechado(true);
-		return false;
+	}
+	
+	public void fecharAnuncios() throws BusinessException{
+		ArrayList<Anuncio> candidates = getLeiloesAtivas();
+		for (Anuncio a:candidates){
+			long now = (new Date()).getTime();
+			long end = a.getLeilao().getDataInicio().getTime() + a.getLeilao().getMaxTempo();
+			if(now > end){
+				fecharAnuncio(a.getId());
+			}
+		}
 	}
 	
 	/**

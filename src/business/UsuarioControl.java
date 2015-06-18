@@ -101,7 +101,7 @@ public class UsuarioControl {
 	public void darPontucao(int aid, int p) throws BusinessException {
 		Anuncio a = (Anuncio) Anuncio.manager.get(aid);
 		Leilao l = a.getLeilao();
-		if(l.getVencedorID() > -1){
+		if(l.getVencedorID() == this.loggedInUser){
 			l.setPontuacao(p);
 			l.save();
 		} else {
@@ -122,6 +122,20 @@ public class UsuarioControl {
 	 */
 	public boolean mediadorLogado(){
 		return Usuario.manager.get(loggedInUser) instanceof Mediador;
+	}
+	
+	public ArrayList<Anuncio> getAnunciosGanhados(){
+		ArrayList<Anuncio> result = new ArrayList<Anuncio>();
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters.put("fechado", "1");
+		ArrayList<Anuncio> all = (ArrayList<Anuncio>)(ArrayList<?>) Anuncio.manager.fetch(filters);
+		for(Anuncio a:all){
+			if(a.getLeilao() != null){
+				if (a.getLeilao().getVencedorID() == this.loggedInUser)
+					result.add(a);
+			}
+		}
+		return result;
 	}
 
 }

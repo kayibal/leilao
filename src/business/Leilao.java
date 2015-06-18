@@ -32,7 +32,6 @@ public class Leilao implements ISerializable{
 		this.maxTempo = maxTempo;
 		this.id = -1;
 		this.setDataInicio(dataInicio);
-		//this.pontuacao = 0;//?
 		this.setVencedorID(-1);
 	}
 	

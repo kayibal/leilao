@@ -105,6 +105,7 @@ public class UsuarioDAO extends SqlGenericDAO{
 		}
 		return b.toString();
 	}
+	
 
 }
 
