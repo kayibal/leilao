@@ -286,7 +286,7 @@ public class UserInterfaceView {
 				keep=true;
 		}while(keep);
 		try {
-			uc.cadastrarUsuario(nome, endereco, Integer.decode(CPF), Integer.decode(telefone), username, senha1);
+			uc.cadastrarUsuario(nome, endereco, Integer.parseInt(CPF), Integer.parseInt(telefone), username, senha1);
 		} catch (BusinessException e) {
 			System.out.println(e.getMessage());
 		}
