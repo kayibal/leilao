@@ -29,7 +29,7 @@ public class UserInterfaceView {
 		do{
 			String selection;
 			if(uc.getLoggedUserID() != 0){
-				System.out.println("Select your desired action by typing the according number:");
+				System.out.println("Escolha a acão desejada:");
 				System.out.println("1. Criar Anuncio");
 				System.out.println("2. Realizar Lance");
 				System.out.println("3. Mostrar Anúncios");
@@ -47,7 +47,7 @@ public class UserInterfaceView {
 					this.darLance();
 					break;
 				case "3":
-					this.mostrarAnuncios();
+					this.mostrarLeiloesAtivos();
 					break;
 				case "4":
 					this.trocarSenha();
@@ -66,7 +66,7 @@ public class UserInterfaceView {
 					break;
 				}
 			}else if(uc.getLoggedUserID() == 0){
-				System.out.println("Selecione a acao desejada:");
+				System.out.println("Selecione a acão desejada:");
 				System.out.println("1. Mostrar Anúncios");
 				System.out.println("2. Realizar cadastro");
 				System.out.println("3. Fazer login");
@@ -75,7 +75,7 @@ public class UserInterfaceView {
 				selection = user_input.next();
 				switch(selection.trim()){
 				case "1":
-					this.mostrarAnuncios();
+					this.mostrarLeiloesAtivos();
 					break;
 				case "2":
 					this.registrarUsuario();
@@ -91,7 +91,7 @@ public class UserInterfaceView {
 					break;
 				}
 			}else if(uc.mediadorLogado()){
-				System.out.println("Selecione a acao desejada:");
+				System.out.println("Selecione a acão desejada:");
 				System.out.println("1. Aprovar anuncios");
 				System.out.println("2. Logout");
 				System.out.println("3. Sair");
@@ -187,7 +187,7 @@ public class UserInterfaceView {
 			}
 	}
 
-	private void mostrarAnuncios() {
+	private void mostrarLeiloesAtivos() {
 		ArrayList<Anuncio> anuncios=ac.getLeiloesAtivas();
 		Iterator<Anuncio> anunciosIt=anuncios.iterator();
 		Integer i=0;
@@ -204,15 +204,10 @@ public class UserInterfaceView {
 		}
 	}
 
-
-	private void mostrarLeilao(int id) {
-		
-	}
-
 	private void darLance() {
 		//TODO Refactor might be necessary
 		int uid = this.uc.getLoggedUserID();
-		this.mostrarLeiloesAtivas();
+		this.mostrarLeiloesAtivos();
 		String anuncioAlvo;
 		System.out.println("Digite o leilão para o qual deseja realizar um lance");
 		anuncioAlvo = user_input.next();
@@ -259,7 +254,7 @@ public class UserInterfaceView {
 				keep=true;
 		}while(keep);
 		try {
-			uc.cadastrarUsuario(nome, endereco, Integer.getInteger(CPF), Integer.getInteger(telefone), username, senha1);
+			uc.cadastrarUsuario(nome, endereco, Integer.decode(CPF), Integer.decode(telefone), username, senha1);
 		} catch (BusinessException e) {
 			System.out.println(e.getMessage());
 		}
@@ -267,13 +262,22 @@ public class UserInterfaceView {
 
 	
 	private void mostrarAnunciosPendentes(){
-		//TODO
+		ArrayList<Anuncio> anuncios=ac.getAnuncioPendentes();
+		Iterator<Anuncio> anunciosIt=anuncios.iterator();
+		Integer i=0;
+		while(anunciosIt.hasNext()){
+			Anuncio anuncio=anunciosIt.next();
+			System.out.println(i.toString() + ")" +
+					anuncio.getMarca() + " " +
+					anuncio.getModelo() + " " +
+					anuncio.getAno() + " " +
+					anuncio.getCor() + " " +
+					anuncio.getPotencia() + " " +
+					"#" + anuncio.getId());
+			i++;
+		}
 	}
 	
-	private void mostrarLeiloesAtivas(){
-		//TODO
-	}
-
 	private void aprovarAnuncios() {
 		//TODO
 	}

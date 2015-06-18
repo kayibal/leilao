@@ -18,7 +18,7 @@ public class UsuarioControl {
 		filters.put("username", username);
 		ArrayList<Usuario> userlist = (ArrayList<Usuario>)(ArrayList<?>) Usuario.manager.fetch(filters);
 		
-		if(userlist!=null){
+		if(!userlist.isEmpty()){
 			throw new BusinessException("Usuario não foi cadastrado: username já em uso\n");
 		}
 		
